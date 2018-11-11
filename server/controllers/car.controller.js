@@ -10,8 +10,8 @@ carCtrl.createCar = async (req, res, next) => {
   try {
     const car = new Car({
       brand: req.body.brand,
-      identification: req.body.identification,
-      color: req.body.color,
+      model: req.body.model,
+      category: req.body.category,
       price: req.body.price
     });
     await car.save();

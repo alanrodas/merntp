@@ -1,2 +1,5 @@
 node_modules
-frontend/node_modules
+client/node_modules
+server/node_modules
+*.DS_Store
+

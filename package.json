@@ -1,0 +1,16 @@
+{
+  "name": "carapp",
+  "version": "1.0.0",
+  "description": "A simple test application for react express mongoose",
+  "author": "",
+  "license": "GPL",
+  "scripts": {
+    "postinstall": "cd client; npm install; cd ../server; npm install",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "client": "cd client; npm run start",
+    "server": "cd server; npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
+}
