@@ -1,9 +1,11 @@
-const Car = require("../models/car");
+// @ts-check
+const Car = require('../models/car');
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
-  //to be implemented
-  // res.ok(data); or  res.internalServerError();
+  Car.find({})
+    .then(items => res.json(items))
+    .catch(err => res.internalServerError());
 };
 
 carCtrl.createCar = async (req, res, next) => {
@@ -12,8 +14,10 @@ carCtrl.createCar = async (req, res, next) => {
       brand: req.body.brand,
       model: req.body.model,
       category: req.body.category,
+      numDoors: req.body.numDoors,
       price: req.body.price
     });
+
     await car.save();
     res.created(car);
   } catch (exception) {
@@ -25,6 +29,7 @@ carCtrl.getCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const car = await Car.findById(id);
+
     if (car) {
       res.ok(car);
     } else {
@@ -36,13 +41,27 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
-  // to be implemented
-  // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  Car.findOneAndUpdate({ id: req.param.id }, req.body)
+    .then(item => {
+      if (item) {
+        res.noContent();
+      } else {
+        res.notFound();
+      }
+    })
+    .catch(err => res.internalServerError());
 };
 
 carCtrl.deleteCar = async (req, res, next) => {
-  // to be implemented
-  // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  Car.findByIdAndRemove(req.params.id)
+    .then(item => {
+      if (item) {
+        res.noContent();
+      } else {
+        res.notFound();
+      }
+    })
+    .catch(err => res.internalServerError());
 };
 
 module.exports = carCtrl;
