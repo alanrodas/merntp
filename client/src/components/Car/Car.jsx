@@ -3,6 +3,12 @@ import { Button } from "reactstrap";
 import axios from "axios";
 
 class Car extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      car: props.car
+    };
+  }
   edit() {
     console.log("edit");
   }
@@ -12,11 +18,11 @@ class Car extends Component {
   }
 
   render() {
+    let car = this.state.car;
     return (
       <tr>
-        <th scope="row"> {this.props.brand} </th>{" "}
-        <th scope="row"> {this.props.model} </th>
-        <td> {this.props.category} </td> <td> {`$${this.props.price}`} </td>
+        <th scope="row"> {car.brand} </th> <th scope="row"> {car.model} </th>
+        <td> {car.category} </td> <td> {`$${car.price}`} </td>
         <td className="Action-Buttons">
           <Button
             onClick={() => this.edit()}

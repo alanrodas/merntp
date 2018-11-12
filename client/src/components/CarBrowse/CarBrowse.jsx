@@ -18,13 +18,13 @@ class CarBrowse extends Component {
   }
 
   requestCars() {
-    axios
+    let self = this;
+    return axios
       .get("/api/cars")
-      .then(cars => {
-        console.log(cars);
-        this.setState({ cars });
-      })
-      .catch(e => console.log(e));
+      .then(res =>
+        self.setState({ cars: res.data }, () => console.log(this.state.cars))
+      )
+      .catch(e => console.log("ERROR", e));
   }
 
   render() {
@@ -32,13 +32,15 @@ class CarBrowse extends Component {
       <Table dark>
         <thead>
           <tr>
-            <th scope="col"> Brand </th> <th scope="col"> Model </th>
-            <th scope="col"> Category </th> <th scope="col"> Price </th>
+            <th scope="col"> Brand </th>
+            <th scope="col"> Model </th>
+            <th scope="col"> Category </th>
+            <th scope="col"> Price </th>
             <th scope="col"> Actions </th>
           </tr>
         </thead>
         <tbody>
-          <ListCars listCars={this.state.cars} />
+          <ListCars cars={this.state.cars} />
         </tbody>
       </Table>
     );
