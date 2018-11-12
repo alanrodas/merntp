@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
 
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 class Car extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +23,10 @@ class Car extends Component {
     let car = this.state.car;
     return (
       <tr>
-        <th scope="row"> {car.brand} </th> <th scope="row"> {car.model} </th>
-        <td> {car.category} </td> <td> {`$${car.price}`} </td>
+        <th scope="row"> {car.brand} </th>
+        <th scope="row"> {car.model} </th>
+        <td> {car.category} </td>
+        <td> {`$${car.price}`} </td>
         <td className="Action-Buttons">
           <Button
             onClick={() => this.edit()}

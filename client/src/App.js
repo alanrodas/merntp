@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
-import HeaderNav from './components/HeaderNav/HeaderNav'
-import CarBrowse from './components/CarBrowse/CarBrowse'
-import './App.css';
+import React, { Component } from "react";
+import HeaderNav from "./components/HeaderNav/HeaderNav";
+import "./App.css";
+import Routing from "./Routing";
+
+import { BrowserRouter as Router } from "react-router-dom";
 
 class App extends Component {
-    render() {
-        return (
-        <div className="Main-App">
-            <HeaderNav></HeaderNav>
-            <CarBrowse></CarBrowse>
+  render() {
+    return (
+      <Router>
+        <div>
+          <HeaderNav />
+          <Routing />
         </div>
+      </Router>
     );
   }
 }
