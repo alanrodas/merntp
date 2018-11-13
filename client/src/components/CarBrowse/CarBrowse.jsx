@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table } from "reactstrap";
 import "./CarBrowse.css";
 import ListCars from "./ListCars/ListCars";
 import Context from "../../Context";
@@ -13,6 +13,7 @@ class CarBrowse extends Component {
 
   requestCars() {
     let gState = this.context;
+    gState.setState({ cars: null });
     return axios
       .get("/api/cars")
       .then(res => gState.setState({ cars: res.data }))

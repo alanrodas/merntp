@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import CarBrowse from "./components/CarBrowse/CarBrowse";
 import NewCar from "./components/FormCar/NewCar/NewCar";
+import EditCar from "./components/FormCar/EditCar/EditCar";
 
 class Routing extends Component {
   render() {
@@ -9,6 +10,7 @@ class Routing extends Component {
       <Switch>
         <Route exact path="/" component={CarBrowse} />
         <Route path="/newCar" component={NewCar} />
+        <Route path="/editCar" component={EditCar} />
       </Switch>
     );
   }

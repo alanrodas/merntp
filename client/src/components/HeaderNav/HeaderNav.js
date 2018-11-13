@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navbar, NavbarBrand, Button } from "reactstrap";
+import { Navbar } from "reactstrap";
 import "./HeaderNav.css";
 import { Link } from "react-router-dom";
 import Route from "react-router-dom/Route";

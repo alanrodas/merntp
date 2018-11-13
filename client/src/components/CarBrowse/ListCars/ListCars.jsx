@@ -6,9 +6,7 @@ class ListCars extends Component {
   render() {
     let gState = this.context;
     if (gState.cars) {
-      return gState.cars.map(c => (
-        <Car key={c._id} car={c} requestCars={this.props.requestCars} />
-      ));
+      return gState.cars.map(c => <Car key={c._id} car={c} />);
     } else {
       return null;
     }

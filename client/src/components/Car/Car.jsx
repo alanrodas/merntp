@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
 import bootbox from "bootbox";
+import { Link } from "react-router-dom";
 
 import Context from "../../Context";
 
@@ -14,9 +15,6 @@ class Car extends Component {
     this.state = {
       car: props.car
     };
-  }
-  edit() {
-    console.log("edit");
   }
 
   removeCar() {
@@ -66,13 +64,15 @@ class Car extends Component {
         <td> {car.category} </td>
         <td> {`$${car.price}`} </td>
         <td className="Action-Buttons">
-          <Button
-            onClick={() => this.edit()}
-            className="Edit-Button"
-            color="info"
+          <Link
+            className="btn btn-info mr-1"
+            to={{
+              pathname: "/editCar/",
+              state: { car }
+            }}
           >
             Edit Car
-          </Button>
+          </Link>
           <Button
             onClick={() => this.delete()}
             className="Delete-Button"
