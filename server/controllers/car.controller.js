@@ -1,6 +1,8 @@
 // @ts-check
 const Car = require('../models/car');
 const carCtrl = {};
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 carCtrl.getCars = async (req, res, next) => {
   Car.find({})
@@ -9,6 +11,7 @@ carCtrl.getCars = async (req, res, next) => {
 };
 
 carCtrl.createCar = async (req, res, next) => {
+  if (!validCar(req.body, res)) return;
   try {
     const car = new Car({
       brand: req.body.brand,
@@ -41,6 +44,7 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
+  if (!validCar(req.body, res)) return;
   Car.findByIdAndUpdate(req.params.id, req.body)
     .then(item => {
       if (item) {
@@ -63,5 +67,27 @@ carCtrl.deleteCar = async (req, res, next) => {
     })
     .catch(err => res.internalServerError());
 };
+
+//------------------------------------ Helper Functions --------------------------
+
+const schCar = {
+  properties: {
+    brand: { type: 'string' },
+    model: { type: 'string' },
+    category: { type: 'string', enum: ['A', 'B', 'C', 'D', 'E'] },
+    numDoors: { type: 'integer', minimum: 1, maximum: 8 },
+    price: { type: 'number', minimum: 0 }
+  },
+  required: ['brand', 'model', 'category', 'numDoors']
+};
+const isCar = ajv.compile(schCar);
+
+function validCar(car, res) {
+  const isOk = isCar(car)
+  if (!isOk) {
+    res.status(400).json({ errMsg: 'Invalid car data' });
+  }
+  return isOk
+}
 
 module.exports = carCtrl;
