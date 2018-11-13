@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-import HeaderNav from './components/HeaderNav/HeaderNav'
-import CarBrowse from './components/CarBrowse/CarBrowse'
+import HeaderNav from './components/HeaderNav'
+import Routing from './components/Routing'
 import './App.css';
 
-class App extends Component {
-    render() {
-        return (
-        <div className="Main-App">
-            <HeaderNav></HeaderNav>
-            <CarBrowse></CarBrowse>
-        </div>
-    );
-  }
-}
+import { BrowserRouter as Router } from "react-router-dom";
 
-export default App;
+
+
+class App extends React.Component {
+    render() {
+      return (<div> 
+                <Router>
+                    <div>
+                        <HeaderNav/>
+                        <Routing/>
+                    </div>
+                </Router>
+        </div>
+      );
+    }
+  }
+ 
+  export default App;

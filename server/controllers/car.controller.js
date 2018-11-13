@@ -1,13 +1,9 @@
-const Car = require("../models/car");
+  const Car = require("../models/car");
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
   //to be implemented
   // res.ok(data); or  res.internalServerError();
-
-   // define a schema
-   //var cars = this.model('Car').find({ });
-
   try {
     let cars = await Car.find();
     if (cars) {
@@ -53,6 +49,18 @@ carCtrl.getCar = async (req, res, next) => {
 carCtrl.editCar = async (req, res, next) => {
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  try {
+    const { id } = req.body.id;
+    const car = await Car.findById(id);
+    if (car) {
+      res.ok(car);
+    } else {
+      res.notFound();
+    }
+  } catch (exception) {
+    res.internalServerError();
+  }
+
 };
 
 carCtrl.deleteCar = async (req, res, next) => {
