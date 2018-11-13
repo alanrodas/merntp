@@ -1,8 +1,40 @@
 import React, { Component } from "react";
 import { Table, Button } from "reactstrap";
 import "./CarBrowse.css";
+const axios = require("axios");
 
 class CarBrowse extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      listaDeAutos: []
+    };
+  }
+
+  componentDidMount() {
+    this.getAutos();
+  }
+
+  getAutos() {
+    let self = this;
+    return axios
+      .get("/api/cars")
+      .then(function(response) {
+        const json = response.data;
+
+        self.setAutos(json);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  setAutos(json) {
+    this.setState({
+      listaDeAutos: json[0]
+    });
+    console.log(json[0]);
+  }
   render() {
     return (
       <Table dark>
