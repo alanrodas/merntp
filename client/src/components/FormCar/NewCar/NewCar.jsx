@@ -1,19 +1,18 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Col,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from "reactstrap";
+import { Container, Button, Form } from "reactstrap";
+import InputGroup from "./InputGroup";
+import Axios from "axios";
 
 class NewCar extends Component {
+  static categoryOptions = ["A", "B", "C", "D", "E", "F", "G", "H"];
   constructor(props) {
     super(props);
     this.state = {
-      categoryOptions: ["A", "B", "C", "D", "E", "F", "G", "H"]
+      brand: "",
+      model: "",
+      category: "A",
+      price: 500000,
+      numDoors: 3
     };
   }
 
@@ -23,79 +22,76 @@ class NewCar extends Component {
     });
   }
 
+  onFormSubmit() {
+    let car = this.makeCar();
+    Axios.post("/api/cars", car)
+      .then(r => this.goHome())
+      .catch(e => console.log(e));
+  }
+
+  makeCar() {
+    return {
+      brand: this.state.brand,
+      model: this.state.model,
+      category: this.state.category,
+      price: this.state.price,
+      numDoors: this.state.numDoors
+    };
+  }
+
+  goHome() {
+    this.props.history.push("/");
+  }
   render() {
     return (
       <Container>
         <Form>
-          <FormGroup row>
-            <Label for="brand" sm={2}>
-              Brand
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="string"
-                name="brand"
-                placeholder="type brand name"
-                onChange={e => this.handleChange(e)}
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="model" sm={2}>
-              Model
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="string"
-                name="model"
-                placeholder="type model"
-                onChange={e => this.handleChange(e)}
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="category" sm={2}>
-              Category
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="select"
-                name="category"
-                onChange={e => this.handleChange(e)}
-              >
-                {this.state.categoryOptions.map(c => (
-                  <option key={c}>{c}</option>
-                ))}
-              </Input>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="price" sm={2}>
-              Price
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="number"
-                name="price"
-                onChange={e => this.handleChange(e)}
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="numDoors" sm={2}>
-              Number of Doors
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="number"
-                value="0"
-                name="numDoors"
-                onChange={e => this.handleChange(e)}
-              />
-            </Col>
-          </FormGroup>
-          <Button className="btn-danger">Cancel</Button>
-          <Button className="btn-success">Submit</Button>
+          <InputGroup
+            label="Brand"
+            name="brand"
+            value={this.state.brand}
+            placeholder="type brand name"
+            onChange={e => this.handleChange(e)}
+          />
+          <InputGroup
+            label="Model"
+            name="model"
+            value={this.state.model}
+            placeholder="type model name"
+            onChange={e => this.handleChange(e)}
+          />
+
+          <InputGroup
+            label="Category"
+            name="category"
+            value={this.state.category}
+            onChange={e => this.handleChange(e)}
+            type="select"
+          >
+            {NewCar.categoryOptions.map(c => (
+              <option key={c}>{c}</option>
+            ))}
+          </InputGroup>
+          <InputGroup
+            label="Price"
+            name="price"
+            value={this.state.price}
+            onChange={e => this.handleChange(e)}
+            type="number"
+          />
+          <InputGroup
+            label="Number of Doors"
+            name="numDoors"
+            value={this.state.numDoors}
+            onChange={e => this.handleChange(e)}
+            type="number"
+          />
+          <Button className="btn-danger" onClick={this.props.history.goBack}>
+            Cancel
+          </Button>
+          <Button className="btn-success" onClick={() => this.onFormSubmit()}>
+            Submit
+          </Button>
         </Form>
       </Container>
     );

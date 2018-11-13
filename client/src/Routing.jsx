@@ -8,7 +8,7 @@ class Routing extends Component {
     return (
       <Switch>
         <Route exact path="/" component={CarBrowse} />
-        <Route exact path="/newCar" component={NewCar} />
+        <Route path="/newCar" component={NewCar} />
       </Switch>
     );
   }
