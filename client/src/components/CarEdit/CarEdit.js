@@ -60,7 +60,7 @@ class CarEdit extends Component {
       </div>
     )
   }
-  
+
   renderInput(label, name, type, ctrlField, minVal) {
     return (
       <InputGroup className='mt-2'>
@@ -177,7 +177,11 @@ class CarEdit extends Component {
       this.props.mainComp.refreshAlerts()
     }
   }
-  
+
+  /*
+   * valida el auto indicado;
+   * si el auto no es válido, genera una excepción con la descripción de los errores
+   */
   checkCar(car) {
     const errs = validateCar(car)
     if (errs.length) {

@@ -6,6 +6,22 @@ import './HeaderNav.css';
 
 
 class HeaderNav extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            alerting: props.alerting,
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps !== this.props) {
+            this.setState({
+                alerting: nextProps.alerting,
+            })
+        }
+    }
+
     
     render() {
         return (
@@ -20,14 +36,7 @@ class HeaderNav extends Component {
                         ></img> &nbsp; CarApp
                     </NavbarBrand>
 
-                    <FormGroup check nav='true' className='ml-4 mr-auto mt-1'>
-                        <Label check className='text-light'>
-                            <Input type="checkbox" className='mr-2'
-                                onChange={(event) => this.onAlertsChange(event.target.checked)}
-                            />
-                            Display Alerts
-                        </Label>
-                    </FormGroup>
+                    {this.renderCheckBoxDisplayAlerts()}
 
                     {this.renderNewCarButton()}
                 </Navbar>
@@ -52,6 +61,24 @@ class HeaderNav extends Component {
     }
 
     /*
+     * muestra el checkbox 'Display Alerts', que permite ocultar o mostrar las notificaciones
+     */
+    renderCheckBoxDisplayAlerts() {
+        return (
+            <FormGroup check nav='true' className='ml-4 mr-auto mt-1'>
+                <Label check className='text-light'>
+                    <Input type="checkbox" className='mr-2'
+                        checked={this.state.alerting}
+                        onChange={(event) => this.onAlertsChange(event.target.checked)}
+                    />
+                    Display Alerts
+                </Label>
+            </FormGroup>
+        )
+    }
+
+    /*
+     * callback para el checkbox 'Display Alerts',
      * controla si se mostrarán alertas, o no
      */
     onAlertsChange(isChecked) {

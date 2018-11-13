@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Button, Table } from 'reactstrap';
+
+import ModalPopup from '../ModalPopup/ModalPopup'
+
 import './CarBrowse.css';
 
 import { deleteCar, getCars, getCarsSortedBy } from '../../api/cars'
@@ -13,6 +16,9 @@ class CarBrowse extends Component {
         this.state = {
             cars: [],
             sortBy: null,
+            sortAscending: true,
+            delCar: null,
+            showDelModal: false,
         }
     }
 
@@ -22,23 +28,29 @@ class CarBrowse extends Component {
 
     render() {
         return (
-            <Table dark>
-                <thead>
-                    <tr>
-                        {this.renderSortableHeader('Brand')}
-                        <th scope="col">Model</th>
-                        {this.renderSortableHeader('Category')}
-                        {this.renderSortableHeader('Price')}
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderCars()}
-                </tbody>
-            </Table>
+            <div>
+                <Table dark>
+                    <thead>
+                        <tr>
+                            {this.renderSortableHeader('Brand')}
+                            <th scope="col">Model</th>
+                            {this.renderSortableHeader('Category')}
+                            {this.renderSortableHeader('Price')}
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderCars()}
+                    </tbody>
+                </Table>
+                {this.renderModal()}
+            </div>
         );
     }
-    
+
+    /*
+     * header con th clickeables para poder ordenar la tabla
+     */
     renderSortableHeader(header) {
         const headerLC = header.toLowerCase()
         return (
@@ -46,15 +58,20 @@ class CarBrowse extends Component {
                 scope='col'
                 onClick={() => this.sortBy(headerLC)}
             >
-                {header} {this.renderCaret(headerLC)}
+                {header} {this.renderSortIcon(headerLC)}
             </th>
         )
     }
-    
-    renderCaret(header) {
+
+    /*
+     * ícono que indica orden ascendente o descendente
+     */
+    renderSortIcon(header) {
         return (
             (header === this.state.sortBy)
-            ? <span>&diams;</span>
+            ?   (this.state.sortAscending)
+                ?   <span className='ml-1'>&#9662;</span>
+                :   <span className='ml-1'>&#9652;</span>
             : null
         )
     }
@@ -81,7 +98,7 @@ class CarBrowse extends Component {
                         Edit Car
                     </Button>
                     <Button className="Delete-Button" color="danger"
-                        onClick={() => this.onDelete(car)}
+                        onClick={() => this.confirmDelete(car)}
                     >
                         Delete Car
                     </Button>
@@ -90,13 +107,40 @@ class CarBrowse extends Component {
         )
     }
 
-    sortBy(header) {
-        if (this.state.header !== header) {
-            this.setState({
+    /*
+     * diálogo modal para confirmar si se desea borrar un auto
+     */
+    renderModal() {
+        return (
+            (this.state.showDelModal)
+            ? <ModalPopup
+                  isOpen={this.state.showDelModal}
+                  title={'Delete Car'}
+                  msg={`Delete ${this.state.delCar.brand} ${this.state.delCar.model} ?`}
+                  fnOnAccept={() => this.onAcceptDel()}
+                  fnOnCancel={() => this.onCloseDelModal()}
+              />
+            : null
+        )
+    }
+
+    /*
+     * settea el estado para ordenar la tabla por la columna indicada
+     * params:
+     * - header: columna por la que se desea ordenar la tabla
+     */
+    async sortBy(header) {
+        if (this.state.sortBy !== header) {
+            await this.setState({
                 sortBy: header,
+                sortAscending: true,
             })
-            this.doGetCarsSortedBy(header)
+        } else {
+            await this.setState({
+                sortAscending: !this.state.sortAscending,
+            })
         }
+        this.doGetCarsSortedByHeader()
     }
 
     /*
@@ -131,10 +175,14 @@ class CarBrowse extends Component {
             this.props.mainComp.refreshAlerts()
         }
     }
-    
-    async doGetCarsSortedBy(header) {
+
+    /*
+     * lee todos los autos,
+     * ordenados según estado setteado en this.state.sortBy y this.state.sortAscending
+     */
+    async doGetCarsSortedByHeader() {
         try {
-            const res = await getCarsSortedBy(header)
+            const res = await getCarsSortedBy(`${this.state.sortAscending ? '' : '-'}${this.state.sortBy}`)
             this.setState({
                 cars: res.data,
             })
@@ -145,7 +193,40 @@ class CarBrowse extends Component {
             this.props.mainComp.refreshAlerts()
         }
     }
+
+    /*
+     * settea estado para mostrar el modal Delete Car
+     * params:
+     * - car: auto a borrar
+     */
+    confirmDelete(car) {
+        this.setState({
+            delCar: car,
+            showDelModal: true,
+        })
+    }
     
+    /*
+     * callback para el modal Delete Car, se ejecuta al presionar el botón Ok;
+     * llama a la api para borrar el auto setteado en el estado y cierra el modal
+     */
+    async onAcceptDel() {
+        await this.onDelete(this.state.delCar)
+        this.onCloseDelModal()
+    }
+
+    /*
+     * se ejecuta al cerrar el modal Delete Car;
+     * limpia el auto a borrar del estado,
+     * y settea estado para ocultar el modal Delete Car
+     */
+    onCloseDelModal() {
+        this.setState({
+            delCar: null,
+            showDelModal: false,
+        })
+    }
+
     /*
      * borra el auto indicado
      * params:

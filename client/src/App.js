@@ -19,7 +19,7 @@ class App extends Component {
         super()
         this.state = {
             editing: false,
-            alerting: false,
+            alerting: true,
             alerts,
         }
     }
@@ -28,7 +28,7 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div className="Main-App">
-                    <HeaderNav mainComp={this} />
+                    <HeaderNav mainComp={this} alerting={this.state.alerting} />
 
                     <Route exact path='/'
                         render={() => <CarBrowse mainComp={this} alerts={this.state.alerts} />}
