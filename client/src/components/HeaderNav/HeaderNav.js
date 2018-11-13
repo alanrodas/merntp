@@ -9,10 +9,10 @@ class MyNav extends Component {
     return (
       <header className="Main-Header">
         <Navbar color="dark" dark>
-          <NavbarBrand href="#">
+          <Link className="navbar-brand" to="/">
             <img className="Brand-Logo" src="/logo.png" alt="Logo" /> &nbsp;
             CarApp
-          </NavbarBrand>
+          </Link>
           {this.props.children}
         </Navbar>
       </header>

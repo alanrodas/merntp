@@ -22,7 +22,6 @@ class Car extends Component {
   removeCar() {
     let gState = this.context;
     const newCarList = gState.cars;
-
     let index = gState.cars.indexOf(this.state.car);
     newCarList.splice(index, 1);
     gState.setState({
