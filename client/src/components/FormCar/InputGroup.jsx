@@ -11,6 +11,7 @@ class InputGroup extends Component {
         </Label>
         <Col sm={10}>
           <Input
+            className="bg-dark text-light"
             type={p.type || "string"}
             name={p.name}
             value={p.value}
