@@ -4,11 +4,21 @@ import CarBrowse from './components/CarBrowse/CarBrowse';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = { mainWindow: <CarBrowse owner={this} /> };
+  }
+
+  setMainWindow(component) {
+    console.log('trato setMainWindow');
+    this.setState({ mainWindow: component });
+  }
+
   render() {
     return (
       <div className="Main-App">
-        <HeaderNav />
-        <CarBrowse />
+        <HeaderNav owner={this} />
+        {this.state.mainWindow}
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button } from 'reactstrap';
 import './CarBrowse.css';
 import api from '../../api/cars';
+import CarEdit from '../CarEdit/CarEdit';
 
 class CarBrowse extends Component {
   constructor(props) {
@@ -9,9 +10,6 @@ class CarBrowse extends Component {
     api.init();
     this.state = {
       cars: []
-      //   itemAAgregar: null,
-      //   itemAModificar: null,
-      //   itemABorrar: null
     };
   }
 
@@ -48,7 +46,13 @@ class CarBrowse extends Component {
         <td>{car.numDoors}</td>
         <td>{'$' + car.price}</td>
         <td className="Action-Buttons">
-          <Button className="Edit-Button" color="info">
+          <Button
+            className="Edit-Button"
+            color="info"
+            onClick={() =>
+              this.props.owner.setMainWindow(<CarEdit car={car} />)
+            }
+          >
             Edit Car
           </Button>
           <Button
@@ -71,7 +75,6 @@ class CarBrowse extends Component {
   }
 
   deleteCar(car) {
-    console.log({ car });
     return api
       .deleteCar(car._id)
       .then(() => this.updateCars())
