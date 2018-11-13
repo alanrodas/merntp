@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CarBrowse from '../CarBrowse/CarBrowse';
 import api from '../../api/cars';
+import Selector from './Selector';
 
 export default class CarEdit extends Component {
   constructor(props) {
@@ -52,19 +53,12 @@ export default class CarEdit extends Component {
             />
           </div>
 
-          <div className="input-group mt-2">
-            <div className="input-group-prepend">
-              <span className="input-group-text width-10-em">Category:</span>
-            </div>
-            <input
-              className="form-control"
-              type="string"
-              value={this.state.category}
-              onChange={event =>
-                this.setState({ category: event.target.value })
-              }
-            />
-          </div>
+          <Selector
+            caption="Category:"
+            valor={this.state.category}
+            valores={['A', 'B', 'C', 'D', 'E']}
+            onChange={value => this.setState({ category: value })}
+          />
 
           <div className="input-group mt-2">
             <div className="input-group-prepend">
