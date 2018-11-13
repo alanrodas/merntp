@@ -41,7 +41,7 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
-  Car.findOneAndUpdate({ id: req.param.id }, req.body)
+  Car.findByIdAndUpdate(req.params.id, req.body)
     .then(item => {
       if (item) {
         res.noContent();

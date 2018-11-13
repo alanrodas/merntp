@@ -24,4 +24,4 @@ yarn-error.log*
 
 # Me gusta ignorarlo
 package-lock.json
-
+./package-lock.json

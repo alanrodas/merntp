@@ -10,7 +10,6 @@ class App extends Component {
   }
 
   setMainWindow(component) {
-    console.log('trato setMainWindow');
     this.setState({ mainWindow: component });
   }
 

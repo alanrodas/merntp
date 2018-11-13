@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-/* Un car es un literal de la forma:
+/* A car is an object literal of the following form:
   {id : MongoId
    brand: String,
    model: String,
@@ -15,23 +15,42 @@ function init() {
 }
 
 function getCars() {
-  return sacarDataDeResponse(axios.get('/api/cars'));
+  return retriveDataFromResponse(axios.get('/api/cars'));
 }
 
 function deleteCar(id) {
   return axios.delete(`/api/cars/${id}`);
 }
 
-// Funciones auxiliares
+function editCar(car) {
+  return axios.put(`/api/cars/${car._id}`, omit(car, ['_id']));
+}
 
-function sacarDataDeResponse(axiosPromise) {
+function createCar(car) {
+  return axios.post(`/api/cars`, car);
+}
+
+// ------------------ Funciones auxiliares -------------------------
+
+function retriveDataFromResponse(axiosPromise) {
   return new Promise((resolve, reject) =>
     axiosPromise.then(res => resolve(res.data)).catch(err => reject(err))
   );
 }
 
+function omit(obj, omitKeys) {
+  return Object.keys(obj).reduce((result, key) => {
+    if (!omitKeys.includes(key)) {
+      result[key] = obj[key];
+    }
+    return result;
+  }, {});
+}
+
 export default {
   init,
   getCars,
-  deleteCar
+  deleteCar,
+  editCar,
+  createCar
 };

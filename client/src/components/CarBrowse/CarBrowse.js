@@ -50,7 +50,9 @@ class CarBrowse extends Component {
             className="Edit-Button"
             color="info"
             onClick={() =>
-              this.props.owner.setMainWindow(<CarEdit car={car} />)
+              this.props.owner.setMainWindow(
+                <CarEdit car={car} owner={this.props.owner} />
+              )
             }
           >
             Edit Car
@@ -71,14 +73,14 @@ class CarBrowse extends Component {
     return api
       .getCars()
       .then(cars => this.setState({ cars }))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   deleteCar(car) {
     return api
       .deleteCar(car._id)
       .then(() => this.updateCars())
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 }
 
