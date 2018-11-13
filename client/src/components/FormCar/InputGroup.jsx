@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Col, FormGroup, Label, Input } from "reactstrap";
+
 class InputGroup extends Component {
   render() {
     let p = this.props;
