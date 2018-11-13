@@ -20,9 +20,9 @@ class Car extends Component {
   }
 
   removeCar() {
-    let gState = this.context;
+    const gState = this.context;
     const newCarList = gState.cars;
-    let index = gState.cars.indexOf(this.state.car);
+    const index = gState.cars.indexOf(this.state.car);
     newCarList.splice(index, 1);
     gState.setState({
       cars: newCarList
@@ -45,7 +45,6 @@ class Car extends Component {
             axios
               .delete(`/api/cars/${self.state.car._id}`)
               .then(response => {
-                bootbox.alert(Car.MSG_SUCCSESS_DELETE);
                 self.removeCar();
               })
               .catch(e => {
