@@ -2,19 +2,15 @@ const Car = require("../models/car");
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
-  
-  try{
-
+  try {
     const cars = await Car.find();
     if (cars) {
       res.ok(cars);
     } else {
       res.notFound();
     }
-    
-  }catch (exception) {
-      res.internalServerError();
-
+  } catch (exception) {
+    res.internalServerError();
   }
 };
 
@@ -48,20 +44,36 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
-  // to be implemented
-  // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  try {
+    const { id } = req.params;
+    const result = await Car.updateOne(
+      { _id: id },
+      {
+        $set: {
+          brand: req.body.brand,
+          model: req.body.model,
+          category: req.body.category,
+          price: req.body.price,
+          numDoors: req.body.numDoors
+        }
+      }
+    );
+    res.noContent();
+  } catch (exception) {
+    res.internalServerError();
+  }
 };
 
 carCtrl.deleteCar = async (req, res, next) => {
- try {
-        const { id } = req.params;
-       console.log(id);
-       const result = await Car.deleteOne({ _id: id });
-   res.noContent();
-     } catch (error) {
-   console.log(error);
-   res.internalServerError();
- }
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const result = await Car.deleteOne({ _id: id });
+    res.noContent();
+  } catch (error) {
+    console.log(error);
+    res.internalServerError();
+  }
 };
 
 module.exports = carCtrl;
