@@ -4,6 +4,20 @@ const carCtrl = {};
 carCtrl.getCars = async (req, res, next) => {
   //to be implemented
   // res.ok(data); or  res.internalServerError();
+
+   // define a schema
+   //var cars = this.model('Car').find({ });
+
+  try {
+    let cars = await Car.find();
+    if (cars) {
+      res.ok(cars)
+    } else {
+      res.notFound();
+    }
+  } catch (exception) {
+    res.internalServerError();
+  }
 };
 
 carCtrl.createCar = async (req, res, next) => {
@@ -12,7 +26,8 @@ carCtrl.createCar = async (req, res, next) => {
       brand: req.body.brand,
       model: req.body.model,
       category: req.body.category,
-      price: req.body.price
+      price: req.body.price,
+      numDoors: req.body.numDoors
     });
     await car.save();
     res.created(car);

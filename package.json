@@ -5,7 +5,7 @@
   "author": "",
   "license": "GPL",
   "scripts": {
-    "postinstall": "cd client; npm install; cd ../server; npm install",
+    "postinstall": "cd client; npm install;",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "cd client; npm run start",
     "server": "cd server; npm run dev"
