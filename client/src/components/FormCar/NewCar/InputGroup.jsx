@@ -15,9 +15,12 @@ class InputGroup extends Component {
             value={p.value}
             placeholder={p.placeholder}
             onChange={p.onChange}
+            min={p.min}
+            max={p.max}
           >
             {this.props.children}
           </Input>
+          {this.props.validator}
         </Col>
       </FormGroup>
     );

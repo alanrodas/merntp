@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { Container, Button, Form } from "reactstrap";
 import InputGroup from "./InputGroup";
 import Axios from "axios";
+import SimpleReactValidator from "simple-react-validator";
 
 class NewCar extends Component {
-  static categoryOptions = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  static categoryOptions = ["A", "B", "C", "D", "E"];
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator();
     this.state = {
       brand: "",
       model: "",
@@ -22,11 +24,22 @@ class NewCar extends Component {
     });
   }
 
+  handleNum(e) {
+    this.setState({
+      [e.target.name]: parseInt(e.target.value)
+    });
+  }
+
   onFormSubmit() {
-    let car = this.makeCar();
-    Axios.post("/api/cars", car)
-      .then(r => this.goHome())
-      .catch(e => console.log(e));
+    if (this.validator.allValid()) {
+      let car = this.makeCar();
+      Axios.post("/api/cars", car)
+        .then(r => this.goHome())
+        .catch(e => console.log(e));
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
   }
 
   makeCar() {
@@ -52,6 +65,11 @@ class NewCar extends Component {
             value={this.state.brand}
             placeholder="type brand name"
             onChange={e => this.handleChange(e)}
+            validator={this.validator.message(
+              "brand",
+              this.state.brand,
+              "required|alpha|max:30"
+            )}
           />
           <InputGroup
             label="Model"
@@ -59,6 +77,11 @@ class NewCar extends Component {
             value={this.state.model}
             placeholder="type model name"
             onChange={e => this.handleChange(e)}
+            validator={this.validator.message(
+              "model",
+              this.state.model,
+              "required|alpha|max:30"
+            )}
           />
 
           <InputGroup
@@ -76,15 +99,27 @@ class NewCar extends Component {
             label="Price"
             name="price"
             value={this.state.price}
-            onChange={e => this.handleChange(e)}
+            onChange={e => this.handleNum(e)}
             type="number"
+            validator={this.validator.message(
+              "price",
+              this.state.price,
+              "currency"
+            )}
           />
           <InputGroup
             label="Number of Doors"
             name="numDoors"
             value={this.state.numDoors}
-            onChange={e => this.handleChange(e)}
+            onChange={e => this.handleNum(e)}
             type="number"
+            min="0"
+            max="10"
+            validator={this.validator.message(
+              "model",
+              this.state.numDoors,
+              "required|integer|gte:0|lte:10"
+            )}
           />
           <Button className="btn-danger" onClick={this.props.history.goBack}>
             Cancel
