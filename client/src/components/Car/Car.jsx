@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
+import bootbox from "bootbox";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -16,7 +17,27 @@ class Car extends Component {
   }
 
   delete() {
-    console.log("delete");
+    let self = this;
+    bootbox.confirm({
+      message:
+        "This is a confirm with custom button text and color! Do you like it?",
+      buttons: {
+        confirm: {
+          label: "Yes",
+          className: "btn-success"
+        },
+        cancel: {
+          label: "No",
+          className: "btn-danger"
+        }
+      },
+      callback: function(result) {
+        axios
+          .delete(`/api/cars/${self.state.car._id}`)
+          .then(response => bootbox.alert("Se ha borrado correctamente"))
+          .catch(e => console.log(e));
+      }
+    });
   }
 
   render() {
