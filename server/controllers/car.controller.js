@@ -10,8 +10,15 @@ carCtrl.getCars = async (req, res, next) => {
     .catch(err => res.internalServerError());
 };
 
+carCtrl.getCarsOrderedBy = async (req, res, next) => {
+  Car.find({})
+    .sort(req.params.order)
+    .then(items => res.json(items))
+    .catch(err => res.internalServerError());
+};
+
 carCtrl.createCar = async (req, res, next) => {
-  if (!validCar(req.body, res)) return;
+  if (!isValidCar(req.body, res)) return;
   try {
     const car = new Car({
       brand: req.body.brand,
@@ -44,7 +51,7 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
-  if (!validCar(req.body, res)) return;
+  if (!isValidCar(req.body, res)) return;
   Car.findByIdAndUpdate(req.params.id, req.body)
     .then(item => {
       if (item) {
@@ -82,12 +89,13 @@ const schCar = {
 };
 const isCar = ajv.compile(schCar);
 
-function validCar(car, res) {
-  const isOk = isCar(car)
+function isValidCar(car, res) {
+  console.log(car);
+  const isOk = isCar(car);
   if (!isOk) {
     res.status(400).json({ errMsg: 'Invalid car data' });
   }
-  return isOk
+  return isOk;
 }
 
 module.exports = carCtrl;

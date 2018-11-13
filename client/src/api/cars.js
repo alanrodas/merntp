@@ -18,6 +18,10 @@ function getCars() {
   return retriveDataFromResponse(axios.get('/api/cars'));
 }
 
+function getCarsOrderedBy(order) {
+  return retriveDataFromResponse(axios.get(`/api/cars/order/${order}`));
+}
+
 function deleteCar(id) {
   return axios.delete(`/api/cars/${id}`);
 }
@@ -50,6 +54,7 @@ function omit(obj, omitKeys) {
 export default {
   init,
   getCars,
+  getCarsOrderedBy,
   deleteCar,
   editCar,
   createCar

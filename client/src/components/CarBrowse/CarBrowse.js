@@ -22,11 +22,51 @@ class CarBrowse extends Component {
       <Table dark>
         <thead>
           <tr>
-            <th scope="col">Brand</th>
-            <th scope="col">Model</th>
-            <th scope="col">Category</th>
-            <th scope="col">Doors</th>
-            <th scope="col">Price</th>
+            <th scope="col">
+              <button
+                type="button"
+                className="btn btn-outline-light border-0"
+                onClick={() => this.changeOrderTo('brand')}
+              >
+                Brand
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                type="button"
+                className="btn btn-outline-light border-0"
+                onClick={() => this.changeOrderTo('model')}
+              >
+                Model
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                type="button"
+                className="btn btn-outline-light border-0"
+                onClick={() => this.changeOrderTo('category')}
+              >
+                Category
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                type="button"
+                className="btn btn-outline-light border-0"
+                onClick={() => this.changeOrderTo('numDoors')}
+              >
+                Doors
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                type="button"
+                className="btn btn-outline-light border-0"
+                onClick={() => this.changeOrderTo('price')}
+              >
+                Price
+              </button>
+            </th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -69,7 +109,14 @@ class CarBrowse extends Component {
     );
   }
 
-  updateCars() {
+  changeOrderTo(order) {
+    return api
+      .getCarsOrderedBy(order)
+      .then(cars => this.setState({ cars }))
+      .catch(err => console.error(err));
+  }
+
+  updateCars(order) {
     return api
       .getCars()
       .then(cars => this.setState({ cars }))

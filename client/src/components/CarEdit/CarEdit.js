@@ -71,7 +71,7 @@ export default class CarEdit extends Component {
               max={8}
               value={this.state.numDoors}
               onChange={event =>
-                this.setState({ numDoors: event.target.value })
+                this.setState({ numDoors: parseInt(event.target.value, 10) })
               }
             />
           </div>
@@ -85,7 +85,9 @@ export default class CarEdit extends Component {
               type="number"
               min={0}
               value={this.state.price}
-              onChange={event => this.setState({ price: event.target.value })}
+              onChange={event =>
+                this.setState({ price: parseInt(event.target.value, 10) })
+              }
             />
           </div>
 
