@@ -2,17 +2,26 @@ import React, { Component } from "react";
 import HeaderNav from "./components/HeaderNav/HeaderNav";
 import "./App.css";
 import Routing from "./Routing";
+import Context from "./Context";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      listCars: [],
+      setState: this.setState.bind(this)
+    };
+  }
+
   render() {
     return (
       <Router>
-        <div>
+        <Context.Provider value={this.state}>
           <HeaderNav />
           <Routing />
-        </div>
+        </Context.Provider>
       </Router>
     );
   }

@@ -2,28 +2,20 @@ import React, { Component } from "react";
 import { Table, Button } from "reactstrap";
 import "./CarBrowse.css";
 import ListCars from "./ListCars/ListCars";
+import Context from "../../Context";
 
 import axios from "axios";
 
 class CarBrowse extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cars: []
-    };
-  }
-
   componentDidMount() {
     this.requestCars();
   }
 
   requestCars() {
-    let self = this;
+    let gState = this.context;
     return axios
       .get("/api/cars")
-      .then(res =>
-        self.setState({ cars: res.data }, () => console.log(this.state.cars))
-      )
+      .then(res => gState.setState({ cars: res.data }))
       .catch(e => console.log("ERROR", e));
   }
 
@@ -40,11 +32,12 @@ class CarBrowse extends Component {
           </tr>
         </thead>
         <tbody>
-          <ListCars cars={this.state.cars} />
+          <ListCars />
         </tbody>
       </Table>
     );
   }
 }
 
+CarBrowse.contextType = Context;
 export default CarBrowse;

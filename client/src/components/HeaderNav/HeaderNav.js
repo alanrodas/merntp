@@ -26,7 +26,7 @@ class HeaderNav extends Component {
       <MyNav>
         <Route
           path="/newCar"
-          exact="true"
+          exact={true}
           children={({ match }) =>
             match ? null : (
               <Link className="btn btn-success" to="/newCar">

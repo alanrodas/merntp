@@ -3,9 +3,12 @@ import { Button } from "reactstrap";
 import axios from "axios";
 import bootbox from "bootbox";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Context from "../../Context";
 
 class Car extends Component {
+  static MESSAGE_DELETE = "Confirm DELETE for the car";
+  static MSG_SUCCSESS_DELETE = "Success DELETE";
+  static MSG_FAIL_DELETE = "DELETE FAIL, see console for more details";
   constructor(props) {
     super(props);
     this.state = {
@@ -16,26 +19,42 @@ class Car extends Component {
     console.log("edit");
   }
 
+  removeCar() {
+    let gState = this.context;
+    const newCarList = gState.cars;
+
+    let index = gState.cars.indexOf(this.state.car);
+    newCarList.splice(index, 1);
+    gState.setState({
+      cars: newCarList
+    });
+  }
+
   delete() {
     let self = this;
-    bootbox.confirm({
-      message:
-        "This is a confirm with custom button text and color! Do you like it?",
+    bootbox.dialog({
+      message: Car.MESSAGE_DELETE,
       buttons: {
-        confirm: {
-          label: "Yes",
-          className: "btn-success"
-        },
         cancel: {
           label: "No",
           className: "btn-danger"
+        },
+        confirm: {
+          label: "Yes",
+          className: "btn-success",
+          callback: function(result) {
+            axios
+              .delete(`/api/cars/${self.state.car._id}`)
+              .then(response => {
+                bootbox.alert(Car.MSG_SUCCSESS_DELETE);
+                self.removeCar();
+              })
+              .catch(e => {
+                console.log(e);
+                bootbox.alert(Car.MSG_FAIL_DELETE);
+              });
+          }
         }
-      },
-      callback: function(result) {
-        axios
-          .delete(`/api/cars/${self.state.car._id}`)
-          .then(response => bootbox.alert("Se ha borrado correctamente"))
-          .catch(e => console.log(e));
       }
     });
   }
@@ -68,4 +87,6 @@ class Car extends Component {
     );
   }
 }
+Car.contextType = Context;
+
 export default Car;

@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import Car from "../../Car/Car";
+import Context from "../../../Context";
 
 class ListCars extends Component {
   render() {
-    if (this.props.cars) {
-      return this.props.cars.map(c => <Car key={c._id} car={c} />);
+    let gState = this.context;
+    if (gState.cars) {
+      return gState.cars.map(c => (
+        <Car key={c._id} car={c} requestCars={this.props.requestCars} />
+      ));
     } else {
       return null;
     }
   }
 }
 
+ListCars.contextType = Context;
 export default ListCars;
