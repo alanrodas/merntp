@@ -90,7 +90,6 @@ const schCar = {
 const isCar = ajv.compile(schCar);
 
 function isValidCar(car, res) {
-  console.log(car);
   const isOk = isCar(car);
   if (!isOk) {
     res.status(400).json({ errMsg: 'Invalid car data' });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './CarBrowse.css';
 import api from '../../api/cars';
 import CarEdit from '../CarEdit/CarEdit';
@@ -9,7 +10,8 @@ class CarBrowse extends Component {
     super(props);
     api.init();
     this.state = {
-      cars: []
+      cars: [],
+      itemABorrar: null
     };
   }
 
@@ -20,72 +22,81 @@ class CarBrowse extends Component {
   render() {
     return (
       <Table dark>
-        <thead>
-          <tr>
-            <th scope="col">
-              <button
-                type="button"
-                className="btn btn-outline-light border-0"
-                onClick={() => this.changeOrderTo('brand')}
-              >
-                Brand
-              </button>
-            </th>
-            <th scope="col">
-              <button
-                type="button"
-                className="btn btn-outline-light border-0"
-                onClick={() => this.changeOrderTo('model')}
-              >
-                Model
-              </button>
-            </th>
-            <th scope="col">
-              <button
-                type="button"
-                className="btn btn-outline-light border-0"
-                onClick={() => this.changeOrderTo('category')}
-              >
-                Category
-              </button>
-            </th>
-            <th scope="col">
-              <button
-                type="button"
-                className="btn btn-outline-light border-0"
-                onClick={() => this.changeOrderTo('numDoors')}
-              >
-                Doors
-              </button>
-            </th>
-            <th scope="col">
-              <button
-                type="button"
-                className="btn btn-outline-light border-0"
-                onClick={() => this.changeOrderTo('price')}
-              >
-                Price
-              </button>
-            </th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
+        {this.renderTableHeader()}
         <tbody>
           {this.state.cars.map((car, idx) => this.renderCarRow(car, idx))}
         </tbody>
+        {this.renderModalConfirmarBorrar()}
       </Table>
+    );
+  }
+
+  renderTableHeader() {
+    return (
+      <thead>
+        <tr>
+          <th scope="col">
+            <button
+              type="button"
+              className="btn btn-outline-light border-0"
+              onClick={() => this.changeOrderTo('brand')}
+            >
+              <strong>Brand</strong>
+            </button>
+          </th>
+          <th scope="col">
+            <button
+              type="button"
+              className="btn btn-outline-light border-0"
+              onClick={() => this.changeOrderTo('model')}
+            >
+              <strong>Model</strong>
+            </button>
+          </th>
+          <th scope="col">
+            <button
+              type="button"
+              className="btn btn-outline-light border-0"
+              onClick={() => this.changeOrderTo('category')}
+            >
+              <strong>Category</strong>
+            </button>
+          </th>
+          <th scope="col">
+            <button
+              type="button"
+              className="btn btn-outline-light border-0"
+              onClick={() => this.changeOrderTo('numDoors')}
+            >
+              <strong>Doors</strong>
+            </button>
+          </th>
+          <th scope="col">
+            <button
+              type="button"
+              className="btn btn-outline-light border-0"
+              onClick={() => this.changeOrderTo('price')}
+            >
+              <strong>Price</strong>
+            </button>
+          </th>
+          <th scope="col" className="text-center">
+            Actions
+          </th>
+        </tr>
+      </thead>
     );
   }
 
   renderCarRow(car, idx) {
     return (
       <tr key={idx}>
-        <th scope="row">{car.brand}</th>
-        <th scope="row">{car.model}</th>
+        <th>{car.brand}</th>
+        <th>{car.model}</th>
         <td>{car.category}</td>
         <td>{car.numDoors}</td>
         <td>{'$' + car.price}</td>
-        <td className="Action-Buttons">
+        <td className="Action-Buttons text-center">
           <Button
             className="Edit-Button"
             color="info"
@@ -100,13 +111,51 @@ class CarBrowse extends Component {
           <Button
             className="Delete-Button"
             color="danger"
-            onClick={() => this.deleteCar(car)}
+            onClick={() => this.setState({ itemABorrar: car })}
           >
             Delete Car
           </Button>
         </td>
       </tr>
     );
+  }
+
+  renderModalConfirmarBorrar() {
+    if (this.state.itemABorrar) {
+      return (
+        <Modal isOpen={true}>
+          <ModalHeader>Please confirm</ModalHeader>
+          <ModalBody>
+            <p>
+              Are you sure you want to delete the car&nbsp;
+              <strong>
+                {this.state.itemABorrar.brand} {this.state.itemABorrar.model}
+              </strong>
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-cancel btn-outline-danger"
+              onClick={() => {
+                this.deleteCar(this.state.itemABorrar);
+                this.setState({ itemABorrar: null });
+              }}
+            >
+              I´m sure
+            </button>
+
+            <button
+              className="btn btn-success"
+              onClick={() => this.setState({ itemABorrar: null })}
+            >
+              Cancel
+            </button>
+          </ModalFooter>
+        </Modal>
+      );
+    } else {
+      return null;
+    }
   }
 
   changeOrderTo(order) {
