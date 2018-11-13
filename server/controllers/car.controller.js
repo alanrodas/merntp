@@ -2,8 +2,24 @@ const Car = require("../models/car");
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
+  
+  try{
+
+    const cars = await Car.find();
+   
+    if (cars) {
+      res.ok(cars);
+    } else {
+      res.notFound();
+    }
+    
+  }catch (exception) {
+      res.internalServerError();
+
+  }
   //to be implemented
   // res.ok(data); or  res.internalServerError();
+
 };
 
 carCtrl.createCar = async (req, res, next) => {
