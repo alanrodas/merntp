@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const carSchema = new Schema({
   brand: { type: String, required: true },
   model: { type: String, required: true },
-  category: { type: String, required: true },
-  price: { type: Number, required: true },
+  category: { type: String, enum: ['A', 'B', 'C', 'D', 'E'], required: true },
+  price: { type: Number },
   numDoors: { type: Number, required: true },
 });
 

@@ -5,3 +5,7 @@
 .Edit-Button {
     margin-right: 10px;
 }
+
+.Sortable {
+    cursor: pointer;
+}

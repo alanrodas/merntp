@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap';
+import { withRouter } from 'react-router-dom'
+import { Button, Table } from 'reactstrap';
 import './CarBrowse.css';
 
-import { deleteCar, getCars } from '../../api/cars'
+import { deleteCar, getCars, getCarsSortedBy } from '../../api/cars'
 
 
 class CarBrowse extends Component {
@@ -11,6 +12,7 @@ class CarBrowse extends Component {
         super()
         this.state = {
             cars: [],
+            sortBy: null,
         }
     }
 
@@ -20,27 +22,43 @@ class CarBrowse extends Component {
 
     render() {
         return (
-            <div className='row'>
-                <div className='col-12'>
-                    <Table dark>
-                        <thead>
-                            <tr>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Model</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.renderCars()}
-                        </tbody>
-                    </Table>
-                </div>
-            </div>
+            <Table dark>
+                <thead>
+                    <tr>
+                        {this.renderSortableHeader('Brand')}
+                        <th scope="col">Model</th>
+                        {this.renderSortableHeader('Category')}
+                        {this.renderSortableHeader('Price')}
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.renderCars()}
+                </tbody>
+            </Table>
         );
     }
-
+    
+    renderSortableHeader(header) {
+        const headerLC = header.toLowerCase()
+        return (
+            <th className='Sortable'
+                scope='col'
+                onClick={() => this.sortBy(headerLC)}
+            >
+                {header} {this.renderCaret(headerLC)}
+            </th>
+        )
+    }
+    
+    renderCaret(header) {
+        return (
+            (header === this.state.sortBy)
+            ? <span>&diams;</span>
+            : null
+        )
+    }
+    
     renderCars() {
         return (
             this.state.cars.map(car => {
@@ -72,14 +90,34 @@ class CarBrowse extends Component {
         )
     }
 
+    sortBy(header) {
+        if (this.state.header !== header) {
+            this.setState({
+                sortBy: header,
+            })
+            this.doGetCarsSortedBy(header)
+        }
+    }
+
+    /*
+     * entra en modo edición, y pasa control al comp CarEdit,
+     * con el auto indicado como argumento
+     * params:
+     * - car: auto a editar
+     */
     showEdit(car) {
-        this.props.mainComp.toggleEditing(true)
+        this.props.mainComp.setEditing(true)
         this.props.history.push({
             pathname: '/edit',
             car,
         })
     }
-
+    
+    // queries a la api
+    
+    /*
+     * lee todos los autos
+     */
     async doGetCars() {
         try {
             const res = await getCars()
@@ -88,24 +126,45 @@ class CarBrowse extends Component {
             })
 
         } catch (err) {
-            console.log(err)
+            this.props.alerts.addError('error fetching cars from server', err)
+        } finally {
+            this.props.mainComp.refreshAlerts()
         }
-
     }
+    
+    async doGetCarsSortedBy(header) {
+        try {
+            const res = await getCarsSortedBy(header)
+            this.setState({
+                cars: res.data,
+            })
 
+        } catch (err) {
+            this.props.alerts.addError('error fetching cars from server', err)
+        } finally {
+            this.props.mainComp.refreshAlerts()
+        }
+    }
+    
+    /*
+     * borra el auto indicado
+     * params:
+     * - car: auto a borrar
+     */
     async onDelete(car) {
         try {
-            const res = await deleteCar(car._id)
-            console.log(res.data)
+            await deleteCar(car._id)
+            this.props.alerts.delAndAddOk(`deleted car ${car.brand} ${car.model}`)
             this.doGetCars()
 
         } catch (err) {
-            console.log(err)
+            this.props.alerts.delAndAddError(`error deleting car ${car.brand} ${car.model}`, err)
+        } finally {
+            this.props.mainComp.refreshAlerts()
         }
-
     }
 
 }
 
 
-export default CarBrowse;
+export default withRouter(CarBrowse);
