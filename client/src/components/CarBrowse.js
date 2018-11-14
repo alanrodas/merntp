@@ -7,7 +7,8 @@ class CarBrowse extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listaDeAutos: []
+      listaDeAutos: [],
+      car: {}
     };
   }
 
@@ -22,7 +23,13 @@ class CarBrowse extends Component {
       .then(function(response) {
         const json = response.data;
 
-        self.setAutos(json);
+        const cars = new Array();
+
+        for (let index = 0; index < json.length; index++) {
+          cars.push(json[index]);
+        }
+
+        self.setAutos(cars);
       })
       .catch(function(error) {
         console.log(error);
@@ -31,67 +38,83 @@ class CarBrowse extends Component {
 
   setAutos(json) {
     this.setState({
-      listaDeAutos: json[0]
+      listaDeAutos: json
     });
-    console.log(json[0]);
+    console.log(json);
   }
+
+  encabezadoDeTabla(titulos) {
+    return titulos.map((titulo, ix) => <th key={ix}>{titulo}</th>);
+  }
+
+  infoCars(car) {
+    const rowDatosAlumno = (
+      <tr id="infoAlum" key={car._dni}>
+        <td>{car.brand}</td>
+        <td>{car.model}</td>
+        <td>{car.category}</td>
+        <td>{car.price}</td>
+        <td>{car.numDoors}</td>
+        <td>
+          {this.botonEditar(car)}
+          {this.botonEliminar(car)}
+        </td>
+      </tr>
+    );
+    return rowDatosAlumno;
+  }
+
+  botonEditar(car) {
+    return this.botonStandard(
+      "Editar Auto",
+      () => this.EditarAuto(car),
+      "btn-info btn-xs",
+      "fa-info"
+    );
+  }
+
+  botonEliminar(car) {
+    return this.botonStandard(
+      "Eliminar",
+      () => this.eliminarAuto(car),
+      "btn-danger btn-xs",
+      "fa-close"
+    );
+  }
+
+  botonStandard(label, accion, clasesAdicionales = "btn-info", glypIcon) {
+    return (
+      <button
+        className={"btn " + clasesAdicionales}
+        style={{ marginRight: "12px" }}
+        onClick={c => accion(c)}
+      >
+        <span className={"fa " + glypIcon}> {label} </span>
+      </button>
+    );
+  }
+
+  EditarAuto(car) {}
+
+  eliminarAuto(car) {}
+
   render() {
     return (
-      <Table dark>
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th scope="col">Brand</th>
-            <th scope="col">Model</th>
-            <th scope="col">Category</th>
-            <th scope="col">Price</th>
-            <th scope="col">Actions</th>
+            {this.encabezadoDeTabla([
+              "Brand",
+              "Model",
+              "Category",
+              "Price",
+              "Doors",
+              "Action"
+            ])}
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Renault</th>
-            <th scope="row">Sandero</th>
-            <td>B</td>
-            <td>$400.000</td>
-            <td className="Action-Buttons">
-              <Button className="Edit-Button" color="info">
-                Edit Car
-              </Button>
-              <Button className="Delete-Button" color="danger">
-                Delete Car
-              </Button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Peugeot</th>
-            <th scope="row">208</th>
-            <td>B</td>
-            <td>$500.000</td>
-            <td className="Action-Buttons">
-              <Button className="Edit-Button" color="info">
-                Edit Car
-              </Button>
-              <Button className="Delete-Button" color="danger">
-                Delete Car
-              </Button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Peugeot</th>
-            <th scope="row">308</th>
-            <td>C</td>
-            <td>$800.000</td>
-            <td className="Action-Buttons">
-              <Button className="Edit-Button" color="info">
-                Edit Car
-              </Button>
-              <Button className="Delete-Button" color="danger">
-                Delete Car
-              </Button>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
+        <tbody>{this.state.listaDeAutos.map(car => this.infoCars(car))}</tbody>
+      </table>
     );
   }
 }
