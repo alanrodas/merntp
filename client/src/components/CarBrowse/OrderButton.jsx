@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import Context from "../../Context";
 
 class OrderButton extends Component {
   constructor(props) {
@@ -12,6 +13,9 @@ class OrderButton extends Component {
   changeGraphic() {
     this.setState({
       graphicUp: !this.state.graphicUp
+    });
+    this.context.setState({
+      cars: this.context.cars.reverse()
     });
   }
 
@@ -38,4 +42,5 @@ class OrderButton extends Component {
   }
 }
 
+OrderButton.contextType = Context;
 export default OrderButton;

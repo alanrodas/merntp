@@ -28,8 +28,38 @@ class CarBrowse extends Component {
       .catch(e => console.log("ERROR", e));
   }
 
-  select(i) {
-    this.setState({ selected: i });
+  select(property) {
+    this.setState({ selected: property });
+    this.orderCarsBy(property);
+  }
+
+  orderCarsBy(property) {
+    let gState = this.context;
+    switch (property) {
+      case "brand":
+        gState.setState({
+          cars: gState.cars.sort((a, b) =>
+            a.brand > b.brand ? 1 : b.brand > a.brand ? -1 : 0
+          )
+        });
+        break;
+      case "category":
+        gState.setState({
+          cars: gState.cars.sort((a, b) =>
+            a.category > b.category ? 1 : b.category > a.category ? -1 : 0
+          )
+        });
+        break;
+      case "price":
+        gState.setState({
+          cars: gState.cars.sort(
+            (a, b) => parseInt(a.price) - parseInt(b.price)
+          )
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   render() {
