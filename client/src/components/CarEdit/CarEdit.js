@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import CarBrowse from '../CarBrowse/CarBrowse';
 import api from '../../api/cars';
 import Selector from './Selector';
+import { Link } from 'react-router-dom';
 
 export default class CarEdit extends Component {
   constructor(props) {
@@ -100,13 +100,9 @@ export default class CarEdit extends Component {
               Accept
             </button>
 
-            <button
-              type="button"
-              className="btn btn-cancel btn-outline-danger"
-              onClick={() => this.returnToMain()}
-            >
+            <Link className="btn btn-cancel btn-outline-danger" to="/">
               Cancel
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -127,6 +123,6 @@ export default class CarEdit extends Component {
     }
   }
   returnToMain() {
-    this.props.owner.setMainWindow(<CarBrowse owner={this.props.owner} />);
+    this.props.history.push('/');
   }
 }

@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './CarBrowse.css';
 import api from '../../api/cars';
 import CarEdit from '../CarEdit/CarEdit';
+import { Link } from 'react-router-dom';
 
 class CarBrowse extends Component {
   constructor(props) {
@@ -97,9 +98,10 @@ class CarBrowse extends Component {
         <td>{car.numDoors}</td>
         <td>{'$' + car.price}</td>
         <td className="Action-Buttons text-center">
-          <Button
+          <Link
             className="Edit-Button"
             color="info"
+            to={{ pathname: '/edit', props: { car } }}
             onClick={() =>
               this.props.owner.setMainWindow(
                 <CarEdit car={car} owner={this.props.owner} />
@@ -107,7 +109,7 @@ class CarBrowse extends Component {
             }
           >
             Edit Car
-          </Button>
+          </Link>
           <Button
             className="Delete-Button"
             color="danger"

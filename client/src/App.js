@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import HeaderNav from './components/HeaderNav/HeaderNav';
 import CarBrowse from './components/CarBrowse/CarBrowse';
+import CarEdit from './components/CarEdit/CarEdit';
+
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = { mainWindow: <CarBrowse owner={this} /> };
-  }
-
-  setMainWindow(component) {
-    this.setState({ mainWindow: component });
-  }
-
   render() {
     return (
       <div className="Main-App">
-        <HeaderNav owner={this} />
-        {this.state.mainWindow}
+        <HeaderNav />
+        <Switch>
+          <Route exact path="/" component={CarBrowse} />
+          <Route exact path="/edit" render={props => <CarEdit {...props} />} />
+          <Route exact path="/create" component={CarEdit} />
+        </Switch>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Button } from 'reactstrap';
-import CarEdit from '../CarEdit/CarEdit';
+import { Navbar, NavbarBrand } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './HeaderNav.css';
 
 class HeaderNav extends Component {
@@ -12,16 +12,9 @@ class HeaderNav extends Component {
             <img className="Brand-Logo" src="/logo.png" alt="Logo" /> &nbsp;
             CarApp
           </NavbarBrand>
-          <Button
-            color="success"
-            onClick={() =>
-              this.props.owner.setMainWindow(
-                <CarEdit car={null} owner={this.props.owner} />
-              )
-            }
-          >
+          <Link className="btn btn-success" color="success" to="create">
             New Car
-          </Button>
+          </Link>
         </Navbar>
       </header>
     );
