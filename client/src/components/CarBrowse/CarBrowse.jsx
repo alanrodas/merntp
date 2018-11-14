@@ -58,6 +58,7 @@ class CarBrowse extends Component {
         });
         break;
       default:
+        console.log(`WARNING: property ${property} not order defined`);
         break;
     }
   }
@@ -82,6 +83,7 @@ class CarBrowse extends Component {
                 selected={this.state.selected}
               />
             </th>
+            <th scope="col"> Doors </th>
             <th scope="col">
               <OrderButton
                 name="price"
