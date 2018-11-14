@@ -62,7 +62,7 @@ class Car extends Component {
         <th scope="row"> {car.brand} </th>
         <th scope="row"> {car.model} </th>
         <td> {car.category} </td>
-        <td> {`$${car.price}`} </td>
+        <td> {car.price ? `$${car.price}` : "no price"} </td>
         <td className="Action-Buttons">
           <Link
             className="btn btn-info mr-1"

@@ -1,5 +1,7 @@
 const Car = require("../models/car");
 const carCtrl = {};
+const validate = require("../validate/validator")
+
 
 carCtrl.getCars = async (req, res, next) => {
   try {
@@ -15,6 +17,11 @@ carCtrl.getCars = async (req, res, next) => {
 };
 
 carCtrl.createCar = async (req, res, next) => {
+  let errorValidation = validate.car(req.body);
+  if (errorValidation.length > 0) {
+    res.badRequest(errorValidation)
+    return;
+  }
   try {
     const car = new Car({
       brand: req.body.brand,
@@ -47,11 +54,19 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
+  try {
+    validate.car(req.body);
+  } catch (error) {
+    res.badRequest(error)
+    return;
+  }
   const {
     id
   } = req.params;
   try {
-    const car = await Car.findByIdAndUpdate(id, {
+    const car = await Car.findOneAndUpdate({
+      _id: id
+    }, {
       $set: req.body
     });
     if (car) {

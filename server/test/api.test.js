@@ -32,6 +32,20 @@ describe("API cars add y remove", () => {
     describe("Fail", () => {
 
         describe("POST car", () => {
+            it("bad category", async () => {
+                let car = {
+                    model: "Clio2",
+                    category: "W",
+                    price: 1000000,
+                    numDoors: 3
+                }
+                try {
+                    await Axios.post("/api/cars/", car)
+                } catch (error) {
+                    assert.equal(error.response.status, 400);
+                    assert.equal(error.response.data[0], "category")
+                }
+            })
             it("without brand", async () => {
                 let car = {
                     model: "Clio2",

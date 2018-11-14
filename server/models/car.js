@@ -17,7 +17,7 @@ const carSchema = new Schema({
     required: true
   },
   price: {
-    type: Number
+    type: String
   },
   numDoors: {
     type: Number,

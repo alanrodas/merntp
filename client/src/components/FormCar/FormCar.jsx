@@ -2,6 +2,17 @@ import React, { Component } from "react";
 import { Container, Button, Form } from "reactstrap";
 import InputGroup from "./InputGroup";
 import SimpleReactValidator from "simple-react-validator";
+
+//Validation personals rules
+const personalRule = {
+  emptyOrInteger: {
+    message: "The :attribute must be a integer",
+    rule: function(val, options) {
+      return this._testRegex(val, /^$|^\d+$/i);
+    }
+  }
+};
+
 /**
  * doOperationToServer: se debe escribir este metodo para poder utilizar el form
  */
@@ -9,7 +20,7 @@ class FormCar extends Component {
   static categoryOptions = ["A", "B", "C", "D", "E"];
   constructor(props) {
     super(props);
-    this.validator = new SimpleReactValidator();
+    this.validator = new SimpleReactValidator(personalRule);
   }
 
   onFormSubmit() {
@@ -49,7 +60,7 @@ class FormCar extends Component {
           validator={this.validator.message(
             "brand",
             this.state.brand,
-            "required|alpha|max:30"
+            "required|alpha_num_dash|max:30"
           )}
         />
         <InputGroup
@@ -59,9 +70,9 @@ class FormCar extends Component {
           placeholder="type model name"
           onChange={e => this.handleChange(e)}
           validator={this.validator.message(
-            "model",
+            "carModel",
             this.state.model,
-            "required|alpha|max:30"
+            "required|alpha_num_dash|max:30"
           )}
         />
         <InputGroup
@@ -79,12 +90,13 @@ class FormCar extends Component {
           label="Price"
           name="price"
           value={this.state.price}
-          onChange={e => this.handleNum(e)}
-          type="number"
+          placeholder="price here"
+          onChange={e => this.handleChange(e)}
+          type="string"
           validator={this.validator.message(
             "price",
             this.state.price,
-            "integer"
+            "emptyOrInteger"
           )}
         />
         <InputGroup
