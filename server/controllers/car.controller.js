@@ -1,6 +1,9 @@
 const Car = require("../models/car");
 const carCtrl = {};
 
+const checkSortableFieldname = require('../utils/validate')
+
+
 carCtrl.getCars = async (req, res, next) => {
   //to be implemented
   try {
@@ -16,9 +19,8 @@ carCtrl.getCars = async (req, res, next) => {
 };
 
 carCtrl.getCarsSortedBy = async (req, res, next) => {
-  console.log('@getCarsSortedBy')
-  console.log(req.params.field)
   try {
+    checkSortableFieldname(req.params.field)
     const cars = await Car.find({}).sort(req.params.field)
     res.ok(cars)
   } catch (exception) {
@@ -32,8 +34,7 @@ carCtrl.getCarsSortedBy = async (req, res, next) => {
 
 carCtrl.createCar = async (req, res, next) => {
   try {
-    const car = new Car(extractCarFromBody(req.body));
-    console.log(car)
+    const car = new Car(extractCarFrom(req.body));
     await car.save();
     res.created(car);
   } catch (exception) {
@@ -63,7 +64,7 @@ carCtrl.editCar = async (req, res, next) => {
   // to be implemented
   try {
     const { id } = req.params;
-    const carUpdate = extractCarFromBody(req.body);
+    const carUpdate = extractCarFrom(req.body);
     const car = await Car.findByIdAndUpdate(id, carUpdate, {runValidators: true} );
     if (car) {
       res.noContent(car);
@@ -98,17 +99,26 @@ carCtrl.deleteCar = async (req, res, next) => {
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
 };
 
-const extractCarFromBody = (body) => {
+
+/*
+ * extrae datos de un auto del objeto indicado
+ * params:
+ * - obj: objeto del que se desea extraer un auto
+ * retorna: un auto
+ */
+const extractCarFrom = (obj) => {
   const car = {
-    brand: body.brand,
-    model: body.model,
-    category: body.category,
-    numDoors: body.numDoors,
+    brand: obj.brand,
+    model: obj.model,
+    category: obj.category,
+    numDoors: obj.numDoors,
   }
-  if (body.price) {
-    car.price = body.price
+  // sólo se incluye `price` si existe el campo en obj
+  if (obj.price) {
+    car.price = obj.price
   }
   return car
 }
+
 
 module.exports = carCtrl;

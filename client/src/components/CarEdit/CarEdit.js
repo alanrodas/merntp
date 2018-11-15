@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardFooter, CardTitle, InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap'
 
 import { createCar, editCar } from '../../api/cars'
-import validateCar from '../../utils/validate'
+import checkCar from '../../utils/validate'
 
 import '../CarBrowse/CarBrowse.css'
 import './CarEdit.css'
@@ -25,6 +25,9 @@ class CarEdit extends Component {
     props.mainComp.setEditing(true)
   }
 
+  /*
+   * actualiza el estado cuando cambian las props
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.car) {
       this.setState({
@@ -35,8 +38,8 @@ class CarEdit extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader>
+      <Card outline color='primary'>
+        <CardHeader className='bg-primary text-light'>
           <CardTitle>{`${this.state.car._id ? 'Edit' : 'New'} Car`}</CardTitle>
         </CardHeader>
         <CardBody>
@@ -85,7 +88,7 @@ class CarEdit extends Component {
   
   renderActions() {
     return (
-      <div className="Action-Buttons">
+      <div className='Action-Buttons'>
         <Button className='Edit-Button' color='primary'
           onClick={() => this.onAccept(this.state.car)}
         >
@@ -135,7 +138,6 @@ class CarEdit extends Component {
   onClose() {
     this.props.mainComp.setEditing(false)
     this.props.history.push('/')
-    // this.props.history.push('/')
   }
 
   // queries a la api
@@ -147,7 +149,7 @@ class CarEdit extends Component {
    */
   async create(car) {
     try {
-      this.checkCar(car)
+      checkCar(car)
       await createCar(car)
       this.props.alerts.delAndAddOk(`created car ${car.brand} ${car.model}`)
       this.onClose()
@@ -166,7 +168,7 @@ class CarEdit extends Component {
    */
   async update(car) {
     try {
-      this.checkCar(car)
+      checkCar(car)
       await editCar(car._id, car)
       this.props.alerts.delAndAddOk(`updated car ${car.brand} ${car.model}`)
       this.onClose()
@@ -178,17 +180,6 @@ class CarEdit extends Component {
     }
   }
 
-  /*
-   * valida el auto indicado;
-   * si el auto no es válido, genera una excepción con la descripción de los errores
-   */
-  checkCar(car) {
-    const errs = validateCar(car)
-    if (errs.length) {
-      throw new Error(`error: ${errs.join(' - ')}`)
-    }
-  }
-  
 }
 
 

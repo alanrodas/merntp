@@ -93,7 +93,8 @@ class App extends Component {
     }
     
     /*
-     * actualiza alertas (patch)
+     * actualiza alertas
+     * (patch: react no siempre se da cuenta cuando se actualizan las listas de un obj Alerts)
      */
     refreshAlerts() {
         this.setState({

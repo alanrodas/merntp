@@ -36,6 +36,7 @@ class CarBrowse extends Component {
                             <th scope="col">Model</th>
                             {this.renderSortableHeader('Category')}
                             {this.renderSortableHeader('Price')}
+                            <th scope="col"># of Doors</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -91,6 +92,7 @@ class CarBrowse extends Component {
                 <th scope="row">{car.model}</th>
                 <td>{car.category}</td>
                 <td>{car.price}</td>
+                <td>{car.numDoors}</td>
                 <td className="Action-Buttons">
                     <Button className="Edit-Button" color="info"
                         onClick={() => this.showEdit(car)}
@@ -116,7 +118,7 @@ class CarBrowse extends Component {
             ? <ModalPopup
                   isOpen={this.state.showDelModal}
                   title={'Delete Car'}
-                  msg={`Delete ${this.state.delCar.brand} ${this.state.delCar.model} ?`}
+                  msg={`Delete ${this.state.delCar.brand} ${this.state.delCar.model}?`}
                   fnOnAccept={() => this.onAcceptDel()}
                   fnOnCancel={() => this.onCloseDelModal()}
               />

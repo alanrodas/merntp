@@ -9,6 +9,9 @@ class ModalPopup extends Component {
     this.state = extractStateFrom(props)
   }
 
+  /*
+   * actualiza el estado cuando cambian las props
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.setState(extractStateFrom(nextProps))
@@ -20,22 +23,22 @@ class ModalPopup extends Component {
       <Modal
           isOpen={this.state.isOpen}
       >
-          <ModalHeader>
+          <ModalHeader className='bg-warning'>
               {this.state.title}
           </ModalHeader>
 
           <ModalBody>
-              {this.state.msg}?
+              {this.state.msg}
           </ModalBody>
 
           <ModalFooter>
-              <Button color="primary" className='mr-2'
+              <Button color='primary' className='mr-2'
                   onClick={() => this.state.fnOnAccept()}
               >
                   OK
               </Button>
 
-              <Button color="secondary"
+              <Button color='secondary'
                   onClick={() => this.state.fnOnCancel()}
               >
                   Cancel
