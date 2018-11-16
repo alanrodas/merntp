@@ -12,7 +12,7 @@ function getCars() {
 }
 
 function addCar(datosCar) {
-  return sacarDataDeResponse(instance.post('/api/cars', datosCar));
+  return instance.post('/api/cars', datosCar);
 }
 
 function getCar(id) {

@@ -15,6 +15,7 @@ carCtrl.createCar = async (req, res, next) => {
       price: req.body.price,
       numDoors: req.body.numDoors
     });
+    console.log(car);
     await car.save();
     res.created(car);
   } catch (exception) {
@@ -43,7 +44,7 @@ carCtrl.editCar = async (req, res, next) => {
     if (car) {
       const { brand, model, category, price, numDoors } = req.body;
       const newCar = { brand, model, category, price, numDoors };
-      await Car.findByIdAndUpdate(req.params.id, newCar);
+      await Car.findOneAndUpdate(req.params.id, newCar);
 
       res.noContent();
     } else {
