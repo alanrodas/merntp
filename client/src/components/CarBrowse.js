@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
 import "./CarBrowse.css";
 const axios = require("axios");
 
@@ -15,6 +14,10 @@ class CarBrowse extends Component {
   componentDidMount() {
     this.getAutos();
   }
+  refrescar() {
+    this.getAutos();
+    //this.props.history.push("/CarBrowse");
+  }
 
   getAutos() {
     let self = this;
@@ -23,7 +26,7 @@ class CarBrowse extends Component {
       .then(function(response) {
         const json = response.data;
 
-        const cars = new Array();
+        const cars = [];
 
         for (let index = 0; index < json.length; index++) {
           cars.push(json[index]);
@@ -32,6 +35,22 @@ class CarBrowse extends Component {
       })
       .catch(function(error) {
         console.log(error);
+      });
+  }
+
+  EditarAuto(car) {}
+
+  eliminarAuto(car) {
+    let self = this;
+    return axios
+      .delete("/api/cars/" + car._id)
+      .then(function(response) {
+        console.log("Se elimino correctamente un AUTO marca: " + car.brand);
+      })
+      .then(() => this.refrescar())
+      .catch(function(error) {
+        console.log(error.response.data.message);
+        console.log("Error, no se pudo eliminar el AUTO : ", error);
       });
   }
 
@@ -47,7 +66,7 @@ class CarBrowse extends Component {
 
   infoCars(car) {
     const rowDatosAlumno = (
-      <tr id="infoAlum" key={car._dni}>
+      <tr id="infoAlum" key={car._id}>
         <td>{car.brand}</td>
         <td>{car.model}</td>
         <td>{car.category}</td>
@@ -91,10 +110,6 @@ class CarBrowse extends Component {
       </button>
     );
   }
-
-  EditarAuto(car) {}
-
-  eliminarAuto(car) {}
 
   render() {
     return (

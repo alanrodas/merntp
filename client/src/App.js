@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import HeaderNav from "./components/HeaderNav";
 import Routing from "./components/Routing";
 import "./App.css";

@@ -1,4 +1,4 @@
-  const Car = require("../models/car");
+const Car = require("../models/car");
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
@@ -7,7 +7,7 @@ carCtrl.getCars = async (req, res, next) => {
   try {
     let cars = await Car.find();
     if (cars) {
-      res.ok(cars)
+      res.ok(cars);
     } else {
       res.notFound();
     }
@@ -60,12 +60,23 @@ carCtrl.editCar = async (req, res, next) => {
   } catch (exception) {
     res.internalServerError();
   }
-
 };
 
 carCtrl.deleteCar = async (req, res, next) => {
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  console.log(req);
+  try {
+    const { id } = req.params.id;
+    const car = await Car.deleteOne(id);
+    if (car) {
+      res.ok(car);
+    } else {
+      res.notFound();
+    }
+  } catch (exception) {
+    res.internalServerError();
+  }
 };
 
 module.exports = carCtrl;
