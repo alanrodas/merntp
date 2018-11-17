@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./CarNew.css";
 import { Link } from "react-router-dom";
+const axios = require("axios");
 
 class CarNew extends Component {
   constructor(props) {
@@ -11,9 +12,9 @@ class CarNew extends Component {
       brand: "",
       model: "",
       categorys: ["A", "B", "C", "D", "E"],
-      category: "",
-      price: "",
-      numerDoors: ""
+      category: "A",
+      price: 0,
+      numDoors: 2
     };
   }
 
@@ -43,12 +44,32 @@ class CarNew extends Component {
       model: "",
       category: "A",
       price: 0,
-      numerDoors: ""
+      numDoors: 2
     };
   }
 
-  cancelar() {}
-  guardar() {}
+  cancelar() {
+    this.props.history.goBack();
+  }
+  guardar() {
+    const car = {
+      brand: this.state.brand,
+      model: this.state.model,
+      category: this.state.brand,
+      price: this.state.price,
+      numDoors: this.state.numDoors
+    };
+    axios
+      .post("/api/cars", car)
+      .then(function(res) {
+        console.log("Se creó correctamente un nuevo AUTO");
+      })
+      .then(() => this.cancelar())
+      .catch(function(error) {
+        console.log(error);
+        alert.error("ERROR - " + error.response.data.message);
+      });
+  }
 
   render() {
     return (
@@ -63,6 +84,11 @@ class CarNew extends Component {
               id="marca"
               placeholder="introduzca la Marca"
               value={this.state.brand}
+              onChange={event =>
+                this.setState({
+                  brand: event.target.value
+                })
+              }
             />{" "}
           </div>{" "}
           <div className="form-group">
@@ -73,6 +99,11 @@ class CarNew extends Component {
               id="modelo"
               placeholder="introduzca el Modelo"
               value={this.state.model}
+              onChange={event =>
+                this.setState({
+                  model: event.target.value
+                })
+              }
             />{" "}
           </div>{" "}
           <div className="form-group">
@@ -112,10 +143,10 @@ class CarNew extends Component {
               className="form-control"
               id="precio"
               placeholder="2"
-              value={this.state.numerDoors}
+              value={this.state.numDoors}
               onChange={event =>
                 this.setState({
-                  numerDoors: event.target.value
+                  numDoors: event.target.value
                 })
               }
             />{" "}

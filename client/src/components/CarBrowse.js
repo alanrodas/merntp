@@ -28,7 +28,6 @@ class CarBrowse extends Component {
         for (let index = 0; index < json.length; index++) {
           cars.push(json[index]);
         }
-
         self.setAutos(cars);
       })
       .catch(function(error) {
@@ -40,7 +39,6 @@ class CarBrowse extends Component {
     this.setState({
       listaDeAutos: json
     });
-    console.log(json);
   }
 
   encabezadoDeTabla(titulos) {
