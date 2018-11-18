@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./CarBrowse.css";
 const axios = require("axios");
+const bootbox = require("bootbox");
 
 class CarBrowse extends Component {
   constructor(props) {
@@ -42,6 +43,30 @@ class CarBrowse extends Component {
 
   eliminarAuto(car) {
     let self = this;
+    bootbox.dialog({
+      title: "Borrado de Auto",
+      message:
+        "Va a eliminar el Auto" +
+        car.brand +
+        " " +
+        car.model +
+        " esta seguro ? ",
+      buttons: {
+        cancel: {
+          label: "Na!",
+          className: "btn-danger",
+          callback: result => {}
+        },
+        confirm: {
+          label: "Obvio!",
+          className: "btn-success",
+          callback: result => self.eliminarAutoOK(car)
+        }
+      }
+    });
+  }
+
+  eliminarAutoOK(car) {
     return axios
       .delete("/api/cars/" + car._id)
       .then(function(response) {

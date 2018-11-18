@@ -5,6 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap";
 import "./index.css";
 
 axios.defaults.baseURL = "http://localhost:3001";

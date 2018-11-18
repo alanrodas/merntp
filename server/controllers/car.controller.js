@@ -65,7 +65,6 @@ carCtrl.editCar = async (req, res, next) => {
 carCtrl.deleteCar = async (req, res, next) => {
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
-  console.log(req);
   try {
     const { id } = req.params.id;
     const car = await Car.deleteOne(id);
