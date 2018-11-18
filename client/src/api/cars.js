@@ -1,7 +1,6 @@
 import axios from 'axios';
-
 /* A car is an object literal of the following form:
-  {id : MongoId
+  {_id : MongoId
    brand: String,
    model: String,
    category: String,
@@ -10,15 +9,21 @@ import axios from 'axios';
   }
 */
 
+init(); // Autoinitialization at module level
+
 function init() {
   axios.defaults.baseURL = 'http://localhost:3001';
+}
+
+function getCar(id) {
+  return retriveDataFromResponse(axios.get(`/api/cars/${id}`));
 }
 
 function getCars() {
   return retriveDataFromResponse(axios.get('/api/cars'));
 }
 
-function getCarsOrderedBy(order) {
+function getCarsSortedBy(order) {
   return retriveDataFromResponse(axios.get(`/api/cars/order/${order}`));
 }
 
@@ -26,35 +31,28 @@ function deleteCar(id) {
   return axios.delete(`/api/cars/${id}`);
 }
 
-function editCar(car) {
-  return axios.put(`/api/cars/${car._id}`, omit(car, ['_id']));
+function editCar(id, car) {
+  return axios.put(`/api/cars/${id}`, car);
 }
 
 function createCar(car) {
   return axios.post(`/api/cars`, car);
 }
 
-// ------------------ Funciones auxiliares -------------------------
+// ------------------ Helper functions -------------------------
 
+// Retrieve the data from the response
 function retriveDataFromResponse(axiosPromise) {
   return new Promise((resolve, reject) =>
     axiosPromise.then(res => resolve(res.data)).catch(err => reject(err))
   );
 }
 
-function omit(obj, omitKeys) {
-  return Object.keys(obj).reduce((result, key) => {
-    if (!omitKeys.includes(key)) {
-      result[key] = obj[key];
-    }
-    return result;
-  }, {});
-}
-
 export default {
   init,
   getCars,
-  getCarsOrderedBy,
+  getCar,
+  getCarsSortedBy,
   deleteCar,
   editCar,
   createCar

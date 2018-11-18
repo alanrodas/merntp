@@ -1,22 +1,21 @@
+// @ts-check
 import React, { Component } from 'react';
 import { Table, Button } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './CarBrowse.css';
 import api from '../../api/cars';
-import CarEdit from '../CarEdit/CarEdit';
 import { Link } from 'react-router-dom';
 
 class CarBrowse extends Component {
   constructor(props) {
     super(props);
-    api.init();
+
+    this.sortColumn = 'brand';
+    this.sortAsc = true;
     this.state = {
       cars: [],
-      itemABorrar: null
+      itemToDelete: null
     };
-  }
-
-  componentDidMount() {
     this.updateCars();
   }
 
@@ -25,9 +24,9 @@ class CarBrowse extends Component {
       <Table dark>
         {this.renderTableHeader()}
         <tbody>
-          {this.state.cars.map((car, idx) => this.renderCarRow(car, idx))}
+          {this.state.cars.map((car, idx) => this.renderRow(car, idx))}
         </tbody>
-        {this.renderModalConfirmarBorrar()}
+        {this.renderModalConfirmation()}
       </Table>
     );
   }
@@ -36,60 +35,32 @@ class CarBrowse extends Component {
     return (
       <thead>
         <tr>
-          <th scope="col">
-            <button
-              type="button"
-              className="btn btn-outline-light border-0"
-              onClick={() => this.changeOrderTo('brand')}
-            >
-              <strong>Brand</strong>
-            </button>
-          </th>
-          <th scope="col">
-            <button
-              type="button"
-              className="btn btn-outline-light border-0"
-              onClick={() => this.changeOrderTo('model')}
-            >
-              <strong>Model</strong>
-            </button>
-          </th>
-          <th scope="col">
-            <button
-              type="button"
-              className="btn btn-outline-light border-0"
-              onClick={() => this.changeOrderTo('category')}
-            >
-              <strong>Category</strong>
-            </button>
-          </th>
-          <th scope="col">
-            <button
-              type="button"
-              className="btn btn-outline-light border-0"
-              onClick={() => this.changeOrderTo('numDoors')}
-            >
-              <strong>Doors</strong>
-            </button>
-          </th>
-          <th scope="col">
-            <button
-              type="button"
-              className="btn btn-outline-light border-0"
-              onClick={() => this.changeOrderTo('price')}
-            >
-              <strong>Price</strong>
-            </button>
-          </th>
-          <th scope="col" className="text-center">
-            Actions
-          </th>
+          {this.renderColHeader('brand', 'Brand')}
+          {this.renderColHeader('model', 'Model')}
+          {this.renderColHeader('category', 'Category')}
+          {this.renderColHeader('numDoors', 'Doors')}
+          {this.renderColHeader('price', 'Price')}
+          <th className="text-center">Actions</th>
         </tr>
       </thead>
     );
   }
 
-  renderCarRow(car, idx) {
+  renderColHeader(col, string) {
+    return (
+      <th scope="col">
+        <button
+          type="button"
+          className="btn btn-outline-light border-0"
+          onClick={() => this.changeOrderTo(col)}
+        >
+          <strong>{string}</strong>
+        </button>
+      </th>
+    );
+  }
+
+  renderRow(car, idx) {
     return (
       <tr key={idx}>
         <th>{car.brand}</th>
@@ -97,33 +68,34 @@ class CarBrowse extends Component {
         <td>{car.category}</td>
         <td>{car.numDoors}</td>
         <td>{'$' + car.price}</td>
-        <td className="Action-Buttons text-center">
-          <Link
-            className="Edit-Button"
-            color="info"
-            to={{ pathname: '/edit', props: { car } }}
-            onClick={() =>
-              this.props.owner.setMainWindow(
-                <CarEdit car={car} owner={this.props.owner} />
-              )
-            }
-          >
-            Edit Car
-          </Link>
-          <Button
-            className="Delete-Button"
-            color="danger"
-            onClick={() => this.setState({ itemABorrar: car })}
-          >
-            Delete Car
-          </Button>
-        </td>
+        {this.renderRowButtons(car)}
       </tr>
     );
   }
 
-  renderModalConfirmarBorrar() {
-    if (this.state.itemABorrar) {
+  renderRowButtons(car) {
+    return (
+      <td className="Action-Buttons text-center">
+        <Link
+          className="btn btn-success Edit-Button"
+          color="info"
+          to={`/edit/${car._id}`}
+        >
+          Edit Car
+        </Link>
+        <Button
+          className="Delete-Button"
+          color="danger"
+          onClick={() => this.setState({ itemToDelete: car })}
+        >
+          Delete Car
+        </Button>
+      </td>
+    );
+  }
+
+  renderModalConfirmation() {
+    if (this.state.itemToDelete) {
       return (
         <Modal isOpen={true}>
           <ModalHeader>Please confirm</ModalHeader>
@@ -131,7 +103,7 @@ class CarBrowse extends Component {
             <p>
               Are you sure you want to delete the car&nbsp;
               <strong>
-                {this.state.itemABorrar.brand} {this.state.itemABorrar.model}
+                {this.state.itemToDelete.brand} {this.state.itemToDelete.model}
               </strong>
             </p>
           </ModalBody>
@@ -139,8 +111,8 @@ class CarBrowse extends Component {
             <button
               className="btn btn-cancel btn-outline-danger"
               onClick={() => {
-                this.deleteCar(this.state.itemABorrar);
-                this.setState({ itemABorrar: null });
+                this.deleteCar(this.state.itemToDelete);
+                this.setState({ itemToDelete: null });
               }}
             >
               I´m sure
@@ -148,7 +120,7 @@ class CarBrowse extends Component {
 
             <button
               className="btn btn-success"
-              onClick={() => this.setState({ itemABorrar: null })}
+              onClick={() => this.setState({ itemToDelete: null })}
             >
               Cancel
             </button>
@@ -161,15 +133,18 @@ class CarBrowse extends Component {
   }
 
   changeOrderTo(order) {
-    return api
-      .getCarsOrderedBy(order)
-      .then(cars => this.setState({ cars }))
-      .catch(err => console.error(err));
+    if (this.sortColumn === order) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortAsc = true;
+    }
+    this.sortColumn = order;
+    this.updateCars();
   }
 
-  updateCars(order) {
+  updateCars() {
     return api
-      .getCars()
+      .getCarsSortedBy((this.sortAsc ? '' : '-') + this.sortColumn)
       .then(cars => this.setState({ cars }))
       .catch(err => console.error(err));
   }

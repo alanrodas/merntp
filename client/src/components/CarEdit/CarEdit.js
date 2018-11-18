@@ -7,17 +7,19 @@ export default class CarEdit extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.car) {
-      this.state = this.props.car;
-    } else {
-      this.state = {
-        _id: null,
+    this.state = {
+      id: this.props.match.params.id,
+      car: {
         brand: '',
         model: '',
         category: 'A',
         numDoors: 4,
         price: 0
-      };
+      }
+    };
+
+    if (this.state.id) {
+      api.getCar(this.state.id).then(car => this.setState({ car }));
     }
   }
 
@@ -26,7 +28,7 @@ export default class CarEdit extends Component {
       <div className="container">
         <div className="col-md-8 m-auto">
           <h1 className="display-4 text-center">
-            {this.state._id ? 'Edit car' : 'New car'}
+            {this.state.id ? 'Modifying car' : 'Adding a car'}
           </h1>
 
           <div className="input-group mt-2">
@@ -36,8 +38,9 @@ export default class CarEdit extends Component {
             <input
               className="form-control"
               type="string"
-              value={this.state.brand}
-              onChange={event => this.setState({ brand: event.target.value })}
+              placeholder="Ford, Chevrolet, ..."
+              value={this.state.car.brand}
+              onChange={e => this.updateCar('brand', e.target.value)}
             />
           </div>
 
@@ -48,16 +51,17 @@ export default class CarEdit extends Component {
             <input
               className="form-control"
               type="string"
-              value={this.state.model}
-              onChange={event => this.setState({ model: event.target.value })}
+              placeholder="Focus, Gol, Sandero, ..."
+              value={this.state.car.model}
+              onChange={e => this.updateCar('model', e.target.value)}
             />
           </div>
 
           <Selector
             caption="Category:"
-            valor={this.state.category}
+            valor={this.state.car.category}
             valores={['A', 'B', 'C', 'D', 'E']}
-            onChange={value => this.setState({ category: value })}
+            onChange={value => this.updateCar('category', value)}
           />
 
           <div className="input-group mt-2">
@@ -69,9 +73,9 @@ export default class CarEdit extends Component {
               type="number"
               min={1}
               max={8}
-              value={this.state.numDoors}
-              onChange={event =>
-                this.setState({ numDoors: parseInt(event.target.value, 10) })
+              value={this.state.car.numDoors}
+              onChange={e =>
+                this.updateCar('numDoors', parseInt(e.target.value))
               }
             />
           </div>
@@ -84,10 +88,8 @@ export default class CarEdit extends Component {
               className="form-control"
               type="number"
               min={0}
-              value={this.state.price}
-              onChange={event =>
-                this.setState({ price: parseInt(event.target.value, 10) })
-              }
+              value={this.state.car.price}
+              onChange={e => this.updateCar('price', parseInt(e.target.value))}
             />
           </div>
 
@@ -109,20 +111,23 @@ export default class CarEdit extends Component {
     );
   }
 
+  updateCar(property, value) {
+    let newCar = { ...this.state.car };
+    newCar[property] = value;
+    this.setState({ id: this.state.id, car: newCar });
+  }
+
   onAccept() {
-    if (this.state._id) {
+    if (this.state.id) {
       return api
-        .editCar(this.state)
-        .then(() => this.returnToMain())
+        .editCar(this.state.id, this.state.car)
+        .then(() => this.props.history.push('/'))
         .catch(err => console.error(err));
     } else {
       return api
-        .createCar(this.state)
-        .then(() => this.returnToMain())
+        .createCar(this.state.car)
+        .then(() => this.props.history.push('/'))
         .catch(err => console.error(err));
     }
-  }
-  returnToMain() {
-    this.props.history.push('/');
   }
 }

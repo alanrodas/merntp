@@ -12,7 +12,7 @@ class HeaderNav extends Component {
             <img className="Brand-Logo" src="/logo.png" alt="Logo" /> &nbsp;
             CarApp
           </NavbarBrand>
-          <Link className="btn btn-success" color="success" to="create">
+          <Link className="btn btn-success" color="success" to="/edit">
             New Car
           </Link>
         </Navbar>
