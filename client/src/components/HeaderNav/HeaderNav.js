@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+import { Navbar } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './HeaderNav.css';
 
@@ -8,11 +8,11 @@ class HeaderNav extends Component {
     return (
       <header className="Main-Header">
         <Navbar color="dark" dark>
-          <NavbarBrand href="#">
+          <Link to="/" className="navbar-brand">
             <img className="Brand-Logo" src="/logo.png" alt="Logo" /> &nbsp;
             CarApp
-          </NavbarBrand>
-          <Link className="btn btn-success" color="success" to="/edit">
+          </Link>
+          <Link className="btn btn-success" color="success" to="/new">
             New Car
           </Link>
         </Navbar>

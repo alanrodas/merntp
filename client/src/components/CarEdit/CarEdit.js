@@ -3,23 +3,37 @@ import api from '../../api/cars';
 import Selector from './Selector';
 import { Link } from 'react-router-dom';
 
+const emptyCar = {
+  brand: '',
+  model: '',
+  category: 'A',
+  numDoors: 4,
+  price: 0
+};
+
 export default class CarEdit extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      id: this.props.match.params.id,
-      car: {
-        brand: '',
-        model: '',
-        category: 'A',
-        numDoors: 4,
-        price: 0
-      }
+      id: null,
+      car: emptyCar
     };
+    this.updateComponent();
+  }
 
-    if (this.state.id) {
-      api.getCar(this.state.id).then(car => this.setState({ car }));
+  updateComponent() {
+    if (this.props.match.params.id) {
+      api
+        .getCar(this.props.match.params.id)
+        .then(car => this.setState({ id: this.props.match.params.id, car }));
+    } else {
+      this.setState({ id: null, car: emptyCar });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props !== prevProps) {
+      this.updateComponent();
     }
   }
 
