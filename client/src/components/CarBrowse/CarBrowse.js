@@ -10,9 +10,9 @@ class CarBrowse extends Component {
   constructor(props) {
     super(props);
 
-    this.sortColumn = 'brand';
-    this.sortAsc = true;
     this.state = {
+      sortColumn: 'brand',
+      sortAsc: true,
       cars: [],
       itemToDelete: null
     };
@@ -54,7 +54,16 @@ class CarBrowse extends Component {
           className="btn btn-outline-light border-0"
           onClick={() => this.changeOrderTo(col)}
         >
-          <strong>{string}</strong>
+          <strong>
+            {string}
+            {col === this.state.sortColumn ? (
+              this.state.sortAsc ? (
+                <span>&darr;</span>
+              ) : (
+                <span>&uarr;</span>
+              )
+            ) : null}
+          </strong>
         </button>
       </th>
     );
@@ -67,7 +76,7 @@ class CarBrowse extends Component {
         <th>{car.model}</th>
         <td>{car.category}</td>
         <td>{car.numDoors}</td>
-        <td>{'$' + car.price}</td>
+        <td>{car.price ? '$' + car.price : 'not set'}</td>
         {this.renderRowButtons(car)}
       </tr>
     );
@@ -76,11 +85,7 @@ class CarBrowse extends Component {
   renderRowButtons(car) {
     return (
       <td className="Action-Buttons text-center">
-        <Link
-          className="btn btn-success Edit-Button"
-          color="info"
-          to={`/edit/${car._id}`}
-        >
+        <Link className="btn btn-info Edit-Button" to={`/edit/${car._id}`}>
           Edit Car
         </Link>
         <Button
@@ -133,18 +138,16 @@ class CarBrowse extends Component {
   }
 
   changeOrderTo(order) {
-    if (this.sortColumn === order) {
-      this.sortAsc = !this.sortAsc;
-    } else {
-      this.sortAsc = true;
-    }
-    this.sortColumn = order;
+    this.setState({
+      sortColumn: order,
+      sortAsc: this.state.sortColumn === order ? !this.state.sortAsc : true
+    });
     this.updateCars();
   }
 
   updateCars() {
     return api
-      .getCarsSortedBy((this.sortAsc ? '' : '-') + this.sortColumn)
+      .getCarsSortedBy((this.state.sortAsc ? '' : '-') + this.state.sortColumn)
       .then(cars => this.setState({ cars }))
       .catch(err => console.error(err));
   }
