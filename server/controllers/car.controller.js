@@ -49,11 +49,24 @@ carCtrl.getCar = async (req, res, next) => {
 carCtrl.editCar = async (req, res, next) => {
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
+  //try {
+  //  validate.car(req.body);
+  //} catch (error) {
+  //  res.badRequest(error)
+  //  return;
+  //}
+  const { id } = req.params;
   try {
-    const { id } = req.body.id;
-    const car = await Car.findById(id);
+    const car = await Car.findOneAndUpdate(
+      {
+        _id: id
+      },
+      {
+        $set: req.body
+      }
+    );
     if (car) {
-      res.ok(car);
+      res.noContent();
     } else {
       res.notFound();
     }

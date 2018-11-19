@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./CarBrowse.css";
 const axios = require("axios");
 const bootbox = require("bootbox");
+const { Link } = require("react-router-dom");
 
 class CarBrowse extends Component {
   constructor(props) {
@@ -38,8 +39,6 @@ class CarBrowse extends Component {
         console.log(error);
       });
   }
-
-  EditarAuto(car) {}
 
   eliminarAuto(car) {
     let self = this;
@@ -107,11 +106,18 @@ class CarBrowse extends Component {
   }
 
   botonEditar(car) {
-    return this.botonStandard(
-      "Editar Auto",
-      () => this.EditarAuto(car),
-      "btn-info btn-xs",
-      "fa-info"
+    return (
+      <Link
+        className="btn btn-primary mr-2 mb-1"
+        to={{
+          pathname: "/CarEdit/",
+          state: {
+            carEdit: car
+          }
+        }}
+      >
+        Editar Auto
+      </Link>
     );
   }
 

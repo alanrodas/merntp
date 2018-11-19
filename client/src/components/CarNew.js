@@ -6,8 +6,6 @@ const axios = require("axios");
 class CarNew extends Component {
   constructor(props) {
     super(props);
-    this.idAutoAEditar = ""; //this.props.location.state.idAuto || "";
-
     this.state = {
       brand: "",
       model: "",
@@ -16,12 +14,6 @@ class CarNew extends Component {
       price: 0,
       numDoors: 2
     };
-  }
-
-  componentDidMount() {
-    if (this.idAutoAEditar) {
-      this.requestAuto();
-    }
   }
 
   manejarSeleccion(event) {
@@ -55,7 +47,7 @@ class CarNew extends Component {
     const car = {
       brand: this.state.brand,
       model: this.state.model,
-      category: this.state.brand,
+      category: this.state.category,
       price: this.state.price,
       numDoors: this.state.numDoors
     };
