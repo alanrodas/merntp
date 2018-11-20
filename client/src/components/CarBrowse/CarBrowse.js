@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import './CarBrowse.css';
 import api from '../../api/cars';
 import { Link } from 'react-router-dom';
 
@@ -110,6 +109,7 @@ class CarBrowse extends Component {
               <strong>
                 {this.state.itemToDelete.brand} {this.state.itemToDelete.model}
               </strong>
+              &nbsp;?
             </p>
           </ModalBody>
           <ModalFooter>

@@ -1,7 +1,7 @@
+// @ts-check
 import React, { Component } from 'react';
 import { Navbar } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './HeaderNav.css';
 
 class HeaderNav extends Component {
   render() {

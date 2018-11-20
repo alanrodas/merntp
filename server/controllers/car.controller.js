@@ -77,7 +77,7 @@ carCtrl.deleteCar = async (req, res, next) => {
 
 //------------------------------------ Helper Functions --------------------------
 
-const schCar = {
+const carScheme = {
   properties: {
     brand: { type: 'string' },
     model: { type: 'string' },
@@ -87,7 +87,7 @@ const schCar = {
   },
   required: ['brand', 'model', 'category', 'numDoors']
 };
-const isCar = ajv.compile(schCar);
+const isCar = ajv.compile(carScheme);
 
 function isValidCar(car, res) {
   const isOk = isCar(car);

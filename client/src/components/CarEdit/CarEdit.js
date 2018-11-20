@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import api from '../../api/cars';
 import Selector from './Selector';
