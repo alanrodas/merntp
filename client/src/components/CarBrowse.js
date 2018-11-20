@@ -129,6 +129,23 @@ class CarBrowse extends Component {
       "fa-close"
     );
   }
+  botonOrdenar(columna) {
+    return this.botonStandard(
+      columna,
+      () => this.ornenarArray(columna),
+      "btn-link",
+      "fa-close"
+    );
+  }
+
+  ornenarArray(orden) {
+    let autos = this.state.listaDeAutos.sort(function(a, b) {
+      return a[orden] > b[orden];
+    });
+    this.setState({
+      listaDeAutos: autos
+    });
+  }
 
   botonStandard(label, accion, clasesAdicionales = "btn-info", glypIcon) {
     return (
@@ -148,11 +165,11 @@ class CarBrowse extends Component {
         <thead>
           <tr>
             {this.encabezadoDeTabla([
-              "Brand",
-              "Model",
-              "Category",
-              "Price",
-              "Doors",
+              this.botonOrdenar("brand"),
+              this.botonOrdenar("model"),
+              this.botonOrdenar("category"),
+              this.botonOrdenar("price"),
+              this.botonOrdenar("numDoors"),
               "Action"
             ])}
           </tr>

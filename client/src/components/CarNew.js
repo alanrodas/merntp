@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Validator from "simple-react-validator";
 import "./CarNew.css";
 import { Link } from "react-router-dom";
 const axios = require("axios");
@@ -9,11 +10,12 @@ class CarNew extends Component {
     this.state = {
       brand: "",
       model: "",
-      categorys: ["A", "B", "C", "D", "E"],
+      categorys: ["A", "B", "C", "D", "E", "F"],
       category: "A",
       price: 0,
       numDoors: 2
     };
+    this.validator = new Validator();
   }
 
   manejarSeleccion(event) {
@@ -43,7 +45,17 @@ class CarNew extends Component {
   cancelar() {
     this.props.history.goBack();
   }
+
   guardar() {
+    if (this.validator.allValid()) {
+      this.guardarValidado();
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+  }
+
+  guardarValidado() {
     const car = {
       brand: this.state.brand,
       model: this.state.model,
@@ -82,6 +94,11 @@ class CarNew extends Component {
                 })
               }
             />{" "}
+            {this.validator.message(
+              "Marca",
+              this.state.brand,
+              "required|alpha"
+            )}
           </div>{" "}
           <div className="form-group">
             <label htmlFor="modelo"> Modelo </label>{" "}
@@ -97,6 +114,7 @@ class CarNew extends Component {
                 })
               }
             />{" "}
+            {this.validator.message("Modelo", this.state.model, "required")}
           </div>{" "}
           <div className="form-group">
             <label htmlFor="categoria"> Categoria </label>{" "}

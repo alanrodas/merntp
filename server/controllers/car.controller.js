@@ -28,6 +28,7 @@ carCtrl.createCar = async (req, res, next) => {
     await car.save();
     res.created(car);
   } catch (exception) {
+    console.log(exception);
     res.internalServerError();
   }
 };
@@ -49,12 +50,6 @@ carCtrl.getCar = async (req, res, next) => {
 carCtrl.editCar = async (req, res, next) => {
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
-  //try {
-  //  validate.car(req.body);
-  //} catch (error) {
-  //  res.badRequest(error)
-  //  return;
-  //}
   const { id } = req.params;
   try {
     const car = await Car.findOneAndUpdate(
