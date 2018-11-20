@@ -1,8 +1,8 @@
-// @ts-check
 import React, { Component } from 'react';
 import api from '../../api/cars';
 import Selector from './Selector';
 import { Link } from 'react-router-dom';
+import SimpleReactValidator from 'simple-react-validator';
 
 const emptyCar = {
   brand: '',
@@ -15,6 +15,12 @@ const emptyCar = {
 export default class CarEdit extends Component {
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator({
+      element: message => (
+        <div className="input-group-text text-danger">{message}</div>
+      )
+    });
+
     this.state = {
       id: null,
       car: emptyCar
@@ -53,10 +59,15 @@ export default class CarEdit extends Component {
             <input
               className="form-control"
               type="string"
-              placeholder="Ford, Chevrolet, ..."
+              required
               value={this.state.car.brand}
               onChange={e => this.updateCar('brand', e.target.value)}
             />
+            {this.validator.message(
+              'brand',
+              this.state.car.brand,
+              'required|alpha'
+            )}
           </div>
 
           <div className="input-group mt-2">
@@ -66,10 +77,15 @@ export default class CarEdit extends Component {
             <input
               className="form-control"
               type="string"
-              placeholder="Focus, Gol, Sandero, ..."
+              required
               value={this.state.car.model}
               onChange={e => this.updateCar('model', e.target.value)}
             />
+            {this.validator.message(
+              'car model',
+              this.state.car.model,
+              'required|alpha'
+            )}
           </div>
 
           <Selector
@@ -93,6 +109,11 @@ export default class CarEdit extends Component {
                 this.updateCar('numDoors', parseInt(e.target.value))
               }
             />
+            {this.validator.message(
+              'doors',
+              this.state.car.model,
+              'required|integer|min:1'
+            )}
           </div>
 
           <div className="input-group mt-2">
@@ -133,6 +154,15 @@ export default class CarEdit extends Component {
   }
 
   onAccept() {
+    if (this.validator.allValid()) {
+      this.doEditOrCreate();
+    } else {
+      this.validator.showMessages();
+      this.forceUpdate();
+    }
+  }
+
+  doEditOrCreate() {
     if (this.state.id) {
       return api
         .editCar(this.state.id, this.state.car)
