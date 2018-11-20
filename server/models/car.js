@@ -5,6 +5,7 @@ const carSchema = new Schema({
   brand: { type: String, required: true },
   model: { type: String, required: true },
   category: { type: String, required: true },
+  nroDoors: { type: Number, required: true },
   price: { type: Number, required: true }
 });
 

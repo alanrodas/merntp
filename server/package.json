@@ -2,8 +2,8 @@
   "name": "carapp-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "iDB": "node ./services/iniciaDB.js",
     "dev": "nodemon ./server/index.js"
   },
   "keywords": [],

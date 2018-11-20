@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const morgan = require("morgan");
 const resStatus = require("express-res-status");
 
 const { mongoose } = require("./database");
+
+const app = express();
 
 // Settings
 app.set("port", process.env.PORT || 3001);

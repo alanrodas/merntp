@@ -3,8 +3,19 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import '../node_modules/bootstrap/js/dist/modal';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
+import '../node_modules/jquery/dist/jquery.js';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
+
+import axios from 'axios';
+
+import proxyApi from "./components/ProxyApi/proxyApi";
+
+// console.log(proxyApi);
+axios.defaults.baseURL = proxyApi;
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

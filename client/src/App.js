@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
-import HeaderNav from './components/HeaderNav/HeaderNav'
-import CarBrowse from './components/CarBrowse/CarBrowse'
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import HeaderNav from './components/HeaderNav/HeaderNav';
 import './App.css';
+import Routing from './Routing/routing';
 
 class App extends Component {
-    render() {
-        return (
+  constructor(props) {
+    super(props);
+      this.state = {
+        listaDeAutos: []
+    }
+  }
+
+  render() {
+    return (
+      <Router>
         <div className="Main-App">
-            <HeaderNav></HeaderNav>
-            <CarBrowse></CarBrowse>
+          <HeaderNav />
+          <Routing />
         </div>
+      </Router>
     );
   }
 }
