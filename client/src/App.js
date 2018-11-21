@@ -16,7 +16,7 @@ class App extends Component {
             <div>
               <Switch>
                 <Route exact={true} path="/" component={CarBrowse} />
-                <Route exact={true} path="/NewCar" component={NewCar} />
+                <Route exact={true} path="/NewCar/:id" component={NewCar} />
                 <Route
                   exact={true}
                   path="/EditionCar/:id"

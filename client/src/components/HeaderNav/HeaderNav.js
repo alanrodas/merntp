@@ -21,7 +21,7 @@ class HeaderNav extends Component {
             CarApp
           </NavbarBrand>
 
-          <Link to="/NewCar" className="link">
+          <Link className="btn btn-success" to="/NewCar/_id">
             New Car
           </Link>
         </Navbar>

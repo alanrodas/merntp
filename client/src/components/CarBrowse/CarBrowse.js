@@ -18,12 +18,12 @@ class CarBrowse extends Component {
       price: 0,
       numDoors: 0,
       agregarCar: false,
-      modificarCar: null, //Lo dejamos preparado para modificaciones
+
       borrarCar: null
     };
   }
   componentDidMount() {
-    this.updateCantCars();
+    this.updateCars();
   }
   render() {
     return (
@@ -53,9 +53,11 @@ class CarBrowse extends Component {
                 ))}
               </tbody>
             </Table>
-            <Link to="/NewCar" className="link">
-              New Car
-            </Link>
+            {
+              // <Link to="/NewCar/_id" className="link">
+              //   New Car
+              // </Link>
+            }
           </div>
         </div>
 
@@ -78,7 +80,6 @@ class CarBrowse extends Component {
               price={this.state.price}
               numDoors={this.state.numDoors}
               onAceptarAgregar={car => this.onAceptarAgregar(car)}
-              // onAceptarModificar={car => this.onAceptarModificar(car)}
             />
           ) : null}
         </div>
@@ -86,13 +87,11 @@ class CarBrowse extends Component {
     );
   }
 
-  //llamadas a la api
-
   onBorrar(car) {
     api
       .deleteCar(car._id)
       .then(() => {
-        this.updateCantCars();
+        this.updateCars();
       })
       .catch(err => console.log(err));
   }
@@ -103,7 +102,7 @@ class CarBrowse extends Component {
       : this.setState({ modificarCar: car });
   }
 
-  updateCantCars() {
+  updateCars() {
     api
       .getCars()
       .then(cars => this.setState({ cars }))
@@ -117,7 +116,7 @@ class CarBrowse extends Component {
     return api
       .modifyCar(car._id, car)
       .then(() => {
-        this.updateCantCars();
+        this.updateCars();
         api.addCar(car._id, car);
       })
       .catch(err => {
@@ -134,7 +133,7 @@ class CarBrowse extends Component {
     api
       .addCar(car)
       .then(res => {
-        this.updateCantCars();
+        this.updateCars();
       })
       .catch(err => this.alertarError(err));
     this.setState({ agregarCar: null });

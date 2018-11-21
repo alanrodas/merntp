@@ -11,9 +11,7 @@ class NewCar extends Component {
       model: '',
       category: '',
       price: 0,
-      numDoors: 0,
-      agregarCar: false,
-      borrarCar: null
+      numDoors: 0
     };
     this.onAceptarAgregar = this.onAceptarAgregar.bind(this);
   }

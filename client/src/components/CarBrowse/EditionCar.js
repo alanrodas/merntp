@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import api from '../../api/api';
 class EditionCar extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +19,11 @@ class EditionCar extends Component {
         car: this.props.car
       });
     }
+  }
+  updateComponent() {
+    api
+      .getCar(this.props.match.params.id)
+      .then(car => this.setState({ id: this.props.match.params.id, car }));
   }
   render() {
     return (

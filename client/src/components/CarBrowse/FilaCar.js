@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
 
 function FilaCar({ car, onBorrar, onModificar }) {
   return (
@@ -21,9 +20,16 @@ function FilaCar({ car, onBorrar, onModificar }) {
         {car.numDoors}
       </td>
       <td className="Action-Buttons">
-        <Link className="btn btn-success" to="/">
-          Edit
-        </Link>
+        <Button
+          className="Delete-Button"
+          color="success"
+          onClick={() => onModificar(car)}
+        >
+          Editar Car
+        </Button>
+        {/* <Link className="btn btn-success" to="/">
+          EditionCar/_id
+        </Link> */}
         <Button
           className="Delete-Button"
           color="danger"
