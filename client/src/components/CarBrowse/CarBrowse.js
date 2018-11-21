@@ -18,21 +18,17 @@ class CarBrowse extends Component {
       numDoors: 0,
       itemAEditar: null
     };
+    this.componentDidMount();
   }
 
   componentDidMount() {
     this.updateCars();
   }
 
-  // carEnBlanco() {
-  //   return;
-  //   const auto = { brand: '', model: '', category: '', price: 0, numDoors: 0 };
-  // }
-
   render() {
     return (
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-12">
           <div>
             <Table dark>
               <thead>
@@ -49,6 +45,7 @@ class CarBrowse extends Component {
               <tbody>
                 {this.state.cars.map(car => (
                   <FilaCar
+                    key={car._id}
                     car={car}
                     onBorrar={() => this.onBorrar(car)}
                     onModificar={() => this.onModificar(car)}
@@ -59,20 +56,18 @@ class CarBrowse extends Component {
           </div>
         </div>
 
-        <div className="col-md-3">
-          {this.state.itemAEditar ? (
-            <EditarCar
-              _id={this.state.itemAEditar._id}
-              brand={this.state.itemAEditar.brand}
-              model={this.state.itemAEditar.model}
-              category={this.state.itemAEditar.category}
-              price={this.state.itemAEditar.price}
-              numDoors={this.state.itemAEditar.numDoors}
-              onAceptarAgregar={car => this.onAceptarAgregar(car)}
-              onAceptarModificar={car => this.onAceptarModificar(car)}
-            />
-          ) : null}
-        </div>
+        {this.state.itemAEditar ? (
+          <EditarCar
+            _id={this.state.itemAEditar._id}
+            brand={this.state.itemAEditar.brand}
+            model={this.state.itemAEditar.model}
+            category={this.state.itemAEditar.category}
+            price={this.state.itemAEditar.price}
+            numDoors={this.state.itemAEditar.numDoors}
+            onAceptarModificar={car => this.onAceptarModificar(car)}
+            onCancelar={car => this.onCancelar()}
+          />
+        ) : null}
       </div>
     );
   }
@@ -97,16 +92,6 @@ class CarBrowse extends Component {
       .catch(err => console.log(err));
   }
 
-  onAceptarAgregar(car) {
-    return api
-      .addCar(car)
-      .then(() => {
-        this.updateCars();
-        this.componentDidMount();
-      })
-      .catch(err => console.log(err));
-  }
-
   onAceptarModificar(car) {
     this.setState({
       itemAEditar: null
@@ -121,17 +106,10 @@ class CarBrowse extends Component {
       });
   }
 
-  //la usaba desde esta pantalla creo la misma en editar auto
-  // onAceptar() {
-  //   const car = {
-  //     brand: this.state.brand,
-  //     model: this.state.model,
-  //     category: this.state.category,
-  //     price: this.state.price,
-  //     numDoors: this.state.numDoors
-  //   };
-  //   this.props.onAceptarAgregar(car);
-  // }
+  onCancelar() {
+    this.setState({ itemAEditar: null });
+    this.componentDidMount();
+  }
 }
 
 export default CarBrowse;

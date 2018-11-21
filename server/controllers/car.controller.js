@@ -41,16 +41,27 @@ carCtrl.editCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const car = await Car.findById(id);
+    console.log('id editando ' + id);
     if (car) {
       const { brand, model, category, price, numDoors } = req.body;
-      const newCar = { brand, model, category, price, numDoors };
-      await Car.findOneAndUpdate(req.params.id, newCar);
-
+      await Car.update(
+        { _id: id },
+        {
+          $set: {
+            brand: req.body.brand,
+            model: req.body.model,
+            category: req.body.category,
+            price: req.body.price,
+            numDoors: req.body.numDoors
+          }
+        }
+      );
       res.noContent();
     } else {
       res.notFound();
     }
   } catch (exception) {
+    console.log(exception);
     res.internalServerError();
   }
 };

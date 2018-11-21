@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import api from '../../api/api';
+import { Link } from 'react-router-dom';
 
 class EditarCar extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      _id: this.props._id,
-      brand: this.props.brand,
-      model: this.props.model,
-      category: this.props.category,
-      price: this.props.price,
-      numDoors: this.props.numDoors,
-      itemAEditar: null
+      _id: null,
+      brand: '',
+      model: '',
+      category: '',
+      price: 0,
+      numDoors: 0
     };
   }
 
@@ -38,7 +39,7 @@ class EditarCar extends Component {
                       }
                     />
                   </div>
-                  <div className="input-group mb-2 ">
+                  <div className="input-group mb-2">
                     <div className="input-group-prepend">
                       <span className="input-group-text">Model: </span>
                     </div>
@@ -64,7 +65,6 @@ class EditarCar extends Component {
                       }
                     />
                   </div>
-
                   <div className="input-group mb-2 ">
                     <div className="input-group-prepend">
                       <span className="input-group-text">Num Doors: </span>
@@ -78,7 +78,6 @@ class EditarCar extends Component {
                       }
                     />
                   </div>
-
                   <div className="input-group mb-2 ">
                     <div className="input-group-prepend">
                       <span className="input-group-text">Price: </span>
@@ -92,18 +91,18 @@ class EditarCar extends Component {
                       }
                     />
                   </div>
-                  <button
+
+                  <Link
+                    to={'/carBrowse'}
                     className="btn btn-success"
                     onClick={() => this.onAceptar()}
                   >
                     Aceptar
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => this.onCancel()}
-                  >
+                  </Link>
+
+                  <Link className="btn btn-danger" to={'/'}>
                     Cancelar
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -111,10 +110,6 @@ class EditarCar extends Component {
         </div>
       </div>
     );
-  }
-
-  onCancel() {
-    this.props.onCancelar();
   }
 
   onAceptar() {
@@ -126,8 +121,14 @@ class EditarCar extends Component {
       price: this.state.price,
       numDoors: this.state.numDoors
     };
+    this.onAceptarAgregar(car);
+  }
 
-    this.props.onAceptarModificar(car);
+  onAceptarAgregar(car) {
+    return api
+      .addCar(car)
+      .then(() => {})
+      .catch(err => console.log(err));
   }
 }
 

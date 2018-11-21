@@ -21,7 +21,9 @@ export default function FilaCar({ car, onBorrar, onModificar }) {
         <Button
           className="Delete-Button"
           color="danger"
-          onClick={() => onBorrar(car)}
+          onClick={() =>
+            window.confirm('ESTA SEGURO QUE DESEA BORRAR?') && onBorrar(car)
+          }
         >
           Delete Car
         </Button>
