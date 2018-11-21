@@ -63,7 +63,7 @@ carCtrl.deleteCar = async (req, res, next) => {
     await Car.findByIdAndRemove(req.params.id);
     res.json({ Status: 'car deleted' });
   } catch (exception) {
-    res.internalServerError();
+    res.notfound();
   }
   // to be implemented
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
