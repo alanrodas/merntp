@@ -95,7 +95,7 @@ class CarBrowse extends Component {
         <td> {auto.nroDoors} </td>
         <td> {auto.price} </td>
         <td className="Action-Buttons">
-          <Link to={{pathname: "/EditCar", state:  auto  }} className="Edit-Button" color="info"  > Modificar
+          <Link to={{pathname: "/EditCar", state:  auto  }} className="btn btn-outline-primary" color="info"  > Modificar
              {/* <span className={"fa " + glyphIcon}> Modificar </span> */}
           </Link>
           <Button className="Delete-Button" color="danger" onClick={() => this.eliminarAuto(auto)}>Eliminar</Button>
