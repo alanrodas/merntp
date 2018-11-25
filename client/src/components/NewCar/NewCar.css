@@ -1,0 +1,20 @@
+.Action-Buttons {
+    text-align: right;
+}
+
+.Edit-Button {
+    margin-right: 10px;
+}
+
+.error { 
+    border: 4px solid red; 
+}
+
+form input{
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px solid green;
+}
