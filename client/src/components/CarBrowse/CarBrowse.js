@@ -4,7 +4,6 @@ import './CarBrowse.css';
 import api from '../../api/api';
 import FilaCar from './FilaCar';
 import EditionCar from './EditionCar';
-import { Link } from 'react-router-dom';
 
 class CarBrowse extends Component {
   constructor(props) {
@@ -53,11 +52,6 @@ class CarBrowse extends Component {
                 ))}
               </tbody>
             </Table>
-            {
-              // <Link to="/NewCar/_id" className="link">
-              //   New Car
-              // </Link>
-            }
           </div>
         </div>
 

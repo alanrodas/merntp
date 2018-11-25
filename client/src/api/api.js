@@ -26,15 +26,11 @@ function deleteCar(id) {
 function modifyCar(id, car) {
   return ax.put(`/api/cars/${id}`, car);
 }
-function getCountCars() {
-  return sacarDataResponse(ax.get('/api/cars/count/'));
-}
 
 export default {
   getCar,
   getCars,
   addCar,
   deleteCar,
-  modifyCar,
-  getCountCars
+  modifyCar
 };

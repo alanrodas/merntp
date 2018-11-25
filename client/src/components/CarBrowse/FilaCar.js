@@ -22,14 +22,12 @@ function FilaCar({ car, onBorrar, onModificar }) {
       <td className="Action-Buttons">
         <Button
           className="Delete-Button"
-          color="success"
+          color="info"
           onClick={() => onModificar(car)}
         >
           Editar Car
         </Button>
-        {/* <Link className="btn btn-success" to="/">
-          EditionCar/_id
-        </Link> */}
+
         <Button
           className="Delete-Button"
           color="danger"
