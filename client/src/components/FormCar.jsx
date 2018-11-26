@@ -53,6 +53,7 @@ class FormCar extends Component {
                     value= { this.state.model }
                     onChange = {(event) => this.setState({ model: event.target.value })}
                     />
+                    {this.validator.message('model', this.state.model, 'required|string')}
                 </div>
                 <div className="form-group">
                   <label htmlFor="categoria"> Categoria </label>
@@ -69,6 +70,7 @@ class FormCar extends Component {
                     value= { this.state.nroDoors }
                     onChange = {(event) => this.setState({ nroDoors: event.target.value })}
                     />
+                    {this.validator.message('nroDoors', this.state.nroDoors, 'required|min:1|max:6')}
                 </div>
                 <div className="form-group">
                   <label htmlFor="price"> Precio </label>
@@ -110,7 +112,7 @@ class FormCar extends Component {
       } else {
         this.validator.showMessages();
         // rerender to show messages for the first time
-        alert("Debe ingresar la Marca")
+        alert("Debe completar todos los campos")
       }
     }  
   
