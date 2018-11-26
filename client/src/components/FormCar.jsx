@@ -6,23 +6,24 @@ import ('../components/NewCar/NewCar.css');
 const bootbox = require("bootbox");
 
 class FormCar extends Component {
-    constructor(props) {
-        super(props);
-        // const stateForm = props.location.state;
+    // constructor(props) {
+    //     super(props);
+    //     // const stateForm = props.location.state;
     
-        console.log(props.location.state);
-    //   this.state = {
-    //     titulo: stateForm ? stateForm.titulo : "",
-    //     brand: '',
-    //     model: '',
-    //     category:'',
-    //     nroDoors:'',
-    //     price:'',
-    //     // titulo: props.state.titulo
-    //   }
-      
-    }
+    // //   this.state = {
+    // //     titulo: stateForm ? stateForm.titulo : "",
+    // //     brand: '',
+    // //     model: '',
+    // //     category:'',
+    // //     nroDoors:'',
+    // //     price:'',
+    // //     // titulo: props.state.titulo
+    // //   }
+
+    // }
+
   
+
     render() {
       return (
         <div className="container">
@@ -102,6 +103,7 @@ class FormCar extends Component {
     }
   
     confirmar(){
+        
       let self = this;
       bootbox.dialog({
         message: "confirma el ingreso del auto ",
@@ -114,7 +116,7 @@ class FormCar extends Component {
           confirm: {
             label: 'Si',
             className: 'btn-success',
-            callback: result => self.procesaAuto()
+            callback: result => self.procesaAuto(this)
           }
         }
       });

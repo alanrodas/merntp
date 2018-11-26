@@ -49,6 +49,7 @@ carCtrl.editCar = async (req, res, next) => {
   // res.noContent(); or  res.internalServerError(); or  res.notFound();
   try {
     const { id } = req.params;
+    
     const car = await Car.updateOne({"_id":id}, {
       $set:{
         brand: req.body.brand,
@@ -60,7 +61,7 @@ carCtrl.editCar = async (req, res, next) => {
     });
     if (car) {
       res.ok(car)
-      console.log("Modifico ok");
+      console.log("se modifico el auto"+ car.brand);
 
     } else {
       res.notFound();

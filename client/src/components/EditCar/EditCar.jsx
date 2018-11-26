@@ -1,58 +1,39 @@
-// import React, { Component } from 'react';
-// import { Button } from 'reactstrap';
-
 import FormCar from '../FormCar';
 
-// const FormCar = require('../FormCar');
-
-// const bootbox = require("bootbox");
 const axios = require('axios');
 
 class EditCar extends FormCar {
   constructor(props) {
     super(props);
-
-    this.state = props.location.state
-    // this.state = {
-    //   brand: '',
-    //   model: '',
-    //   category:'',
-    //   nroDoors:'',
-    //   price:'',
-    //   titulo: 'Modifica Auto'
-    // }
-    // this.ingresaAuto=this.ingresaAuto.bind(this);
+    // this.state = props.location.state
+    this.state = {
+      brand: this.props.location.state.brand,
+      model: this.props.location.state.model,
+      category: this.props.location.state.category,
+      nroDoors: this.props.location.state.nroDoors,
+      price: this.props.location.state.price,
+      titulo: 'Modificar Auto'
+    }
   }
 
-  procesaAuto(auto) {
-
-    // let self = this;
-    this.setState = {
-      brand: this.state.brand,
-      model: this.state.model,
-      category: this.state.category,
-      nroDoors: this.state.nroDoors,
-      price: this.state.price
-    };
-
+  procesaAuto() {
     let self = this;
-
+    let autoId = self.props.location.state._id;
+ 
     return axios
-      .put('/api/cars/' + auto.state._id, {
-        brand: this.state.brand,
-        model: this.state.model,
-        category: this.state.category,
-        nroDoors: this.state.nroDoors,
-        price: this.state.price
+    .put('/api/cars/' + autoId, {
+        brand: self.state.brand,
+        model: self.state.model,
+        category: self.state.category,
+        nroDoors: self.state.nroDoors,
+        price: self.state.price
       })
       .then(function (response) {
         console.log("Se modifico el Auto");
         self.props.history.push("/CarBrowse");
       })
       .catch(Error)
-
   }
-
 } 
 
 export default EditCar;
