@@ -95,10 +95,10 @@ class CarBrowse extends Component {
         <td> {auto.nroDoors} </td>
         <td> {auto.price} </td>
         <td className="Action-Buttons">
-          <Link to={{pathname: "/EditCar", state:  auto  }} className="btn btn-outline-primary" color="info"  > Modificar
+          <Link to={{pathname: "/EditCar", state:  auto  }} className="btn btn-outline-primary mr-4 ml-4" color="info"  > Modificar
              {/* <span className={"fa " + glyphIcon}> Modificar </span> */}
           </Link>
-          <Button className="Delete-Button" color="danger" onClick={() => this.eliminarAuto(auto)}>Eliminar</Button>
+          <Button className="btn btn-outline-danger" color="danger" onClick={() => this.eliminarAuto(auto)}>Eliminar</Button>
           
         </td>
       </tr>
