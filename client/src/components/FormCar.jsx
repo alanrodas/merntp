@@ -22,6 +22,7 @@ class FormCar extends Component {
     // //   }
 
       this.validator = new SimpleReactValidator();
+      this.setCategory = "A, B, C, D, E"
     }
 
   
@@ -62,23 +63,25 @@ class FormCar extends Component {
                     value= { this.state.category }
                     onChange = {(event) => this.setState({ category: event.target.value })}
                     />
+                    {this.validator.message('category', this.state.category, 'required|min:1|max:1|in:A, B, C, D, E')}
                 </div>
                 <div className="form-group">
                   <label htmlFor="ctdadPtas"> Ctdad Puertas </label>
-                  <input type="text" className="form-control" id="ctdadPtas"
+                  <input type="number" className="form-control" id="ctdadPtas"
                     placeholder="ingrese la ctdad de puertas"
                     value= { this.state.nroDoors }
                     onChange = {(event) => this.setState({ nroDoors: event.target.value })}
                     />
-                    {this.validator.message('nroDoors', this.state.nroDoors, 'required|min:1|max:6')}
+                    {this.validator.message('nroDoors', this.state.nroDoors, 'required|numeric')}
                 </div>
                 <div className="form-group">
                   <label htmlFor="price"> Precio </label>
-                  <input type="text" className="form-control" id="price"
+                  <input type="number" className="form-control" id="price"
                     placeholder="ingrese el precio"
                     value= { this.state.price }
                     onChange = {(event) => this.setState({ price: event.target.value })}
                     />
+                    {this.validator.message('price', this.state.price, 'required|numeric')}
                 </div>
               </React.Fragment>
             </div>
@@ -112,7 +115,7 @@ class FormCar extends Component {
       } else {
         this.validator.showMessages();
         // rerender to show messages for the first time
-        alert("Debe completar todos los campos")
+        alert("Verifique los datos ingresados")
       }
     }  
   
