@@ -106,14 +106,9 @@ export default class CarEdit extends Component {
               max={8}
               value={this.state.car.numDoors}
               onChange={e =>
-                this.updateCar('numDoors', parseInt(e.target.value))
+                this.updateCar('numDoors', parseInt(e.target.value, 10))
               }
             />
-            {this.validator.message(
-              'doors',
-              this.state.car.model,
-              'required|integer|min:1'
-            )}
           </div>
 
           <div className="input-group mt-2">
