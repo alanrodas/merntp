@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
+import SimpleReactValidator from 'simple-react-validator';
 
 import ('../components/NewCar/NewCar.css');
 
 const bootbox = require("bootbox");
 
 class FormCar extends Component {
-    // constructor(props) {
-    //     super(props);
+    constructor(props) {
+        super(props);
     //     // const stateForm = props.location.state;
     
     // //   this.state = {
@@ -20,7 +21,8 @@ class FormCar extends Component {
     // //     // titulo: props.state.titulo
     // //   }
 
-    // }
+      this.validator = new SimpleReactValidator();
+    }
 
   
 
@@ -42,6 +44,7 @@ class FormCar extends Component {
                     value= { this.state.brand }
                     onChange = {(event) => this.setState({ brand: event.target.value })}
                     />
+                    {this.validator.message('brand', this.state.brand, 'required|string')}
                 </div>
                 <div className="form-group">
                   <label htmlFor="modelo"> Modelo </label>
@@ -92,7 +95,7 @@ class FormCar extends Component {
               </Button>
               <Button className="btn btn-success" 
                 style={{ marginRight: "12px", marginTop: "8px", marginBottom: "10px"}} 
-                onClick = {() => this.confirmar()}
+                onClick = {() => this.onSubmit()}
                 >
                 <span className="fa fa-check-circle"> Aceptar </span> 
               </Button>
@@ -101,6 +104,15 @@ class FormCar extends Component {
         </div>
       )
     }
+    onSubmit(){
+      if( this.validator.allValid() ){
+        this.confirmar();
+      } else {
+        this.validator.showMessages();
+        // rerender to show messages for the first time
+        alert("Debe ingresar la Marca")
+      }
+    }  
   
     confirmar(){
         
