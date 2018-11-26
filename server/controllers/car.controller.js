@@ -4,8 +4,6 @@ const carCtrl = {};
 carCtrl.getCars = async (req, res, next) => {
   const cars = await Car.find();
   res.ok(cars);
-  //to be implemented
-  // res.ok(data); or  res.internalServerError();
 };
 
 carCtrl.createCar = async (req, res, next) => {
