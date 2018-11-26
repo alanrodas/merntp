@@ -2,8 +2,13 @@ const Car = require('../models/car');
 const carCtrl = {};
 
 carCtrl.getCars = async (req, res, next) => {
-  const cars = await Car.find();
-  res.ok(cars);
+  try {
+    const cars = await Car.find();
+    res.ok(cars);
+  } catch (exception) {
+    console.log('hola luz');
+    res.internalServerError();
+  }
 };
 
 carCtrl.createCar = async (req, res, next) => {
@@ -37,19 +42,22 @@ carCtrl.getCar = async (req, res, next) => {
 };
 
 carCtrl.editCar = async (req, res, next) => {
+  console.log('hola');
+  console.log(req.body);
   try {
     const { id } = req.params;
-    const car = await Car.findById(id);
-    if (car) {
-      const { brand, model, category, price, numDoors } = req.body;
-      const newCar = { brand, model, category, price, numDoors };
-      await Car.findByIdAndUpdate(req.params.id, newCar);
-
+    // const car = await Car.findById(id);
+    // if (car) {
+    const { brand, model, category, price, numDoors } = req.body;
+    const newCar = { brand, model, category, price, numDoors };
+    const auto = await Car.findByIdAndUpdate(req.params.id, newCar);
+    if (auto) {
       res.noContent();
     } else {
       res.notFound();
     }
   } catch (exception) {
+    console.log('error');
     res.internalServerError();
   }
   // to be implemented

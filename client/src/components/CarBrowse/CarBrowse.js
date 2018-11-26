@@ -111,7 +111,6 @@ class CarBrowse extends Component {
       .modifyCar(car._id, car)
       .then(() => {
         this.updateCars();
-        api.addCar(car._id, car);
       })
       .catch(err => {
         console.log(err);

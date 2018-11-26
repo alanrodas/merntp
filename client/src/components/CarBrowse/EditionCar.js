@@ -68,9 +68,11 @@ class EditionCar extends Component {
           </div>
           <input
             className="form-control"
-            type="numbers"
+            type="number"
             value={this.state.numDoors}
-            onChange={event => this.setState({ numDoors: event.target.value })}
+            onChange={event =>
+              this.setState({ numDoors: parseInt(event.target.value, 10) })
+            }
           />
         </div>
 
@@ -82,7 +84,9 @@ class EditionCar extends Component {
             className="form-control"
             type="number"
             value={this.state.price}
-            onChange={event => this.setState({ price: event.target.value })}
+            onChange={event =>
+              this.setState({ price: parseInt(event.target.value, 10) })
+            }
           />
         </div>
         <button className="btn btn-success" onClick={() => this.onAceptar()}>
@@ -105,7 +109,7 @@ class EditionCar extends Component {
       price: this.state.price,
       numDoors: this.state.numDoors
     };
-
+    console.log(car);
     if (this.props._id) {
       this.props.onAceptarModificar(car);
     } else {
