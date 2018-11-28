@@ -1,15 +1,29 @@
 import React, { Component } from "react";
 import HeaderNav from "./components/HeaderNav/HeaderNav";
 import CarBrowse from "./components/CarBrowse/CarBrowse";
+import { BrowserRouter as Router } from "react-router-dom";
+import EditCarForm from "./components/Form/EditCarForm";
+
+import Route from "react-router-dom/Route";
+import CarFormR from "./components/Form/CarFormR";
+
 import "./App.css";
 
 class App extends Component {
+  pindonga() {
+    alert("La Mansilla le metia los cuernos a pedro con el Leiva");
+  }
+
   render() {
     return (
-      <div className="Main-App">
-        <HeaderNav />
-        <CarBrowse />
-      </div>
+      <Router>
+        <div className="Main-App">
+          <Route path="/" exact component={HeaderNav} />
+          <Route path="/" exact component={CarBrowse} />
+          <Route path="/newCar" exact strict component={CarFormR} />
+          <Route path="/editCar/:id" exact strict component={EditCarForm} />
+        </div>
+      </Router>
     );
   }
 }

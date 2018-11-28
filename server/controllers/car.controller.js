@@ -16,11 +16,13 @@ carCtrl.getCars = async (req, res, next) => {
 
 carCtrl.createCar = async (req, res, next) => {
   try {
+    console.log(req);
     const car = new Car({
       brand: req.body.brand,
       model: req.body.model,
       category: req.body.category,
-      price: req.body.price
+      price: req.body.price,
+      numDoors: req.body.numDoors
     });
     await car.save();
     res.created(car);

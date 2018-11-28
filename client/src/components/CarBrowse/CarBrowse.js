@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import BodyTable from "../BodyTable/BodyTable";
+import TableRow from "../TableRow/TableRow";
+const axios = require("axios");
 
 class CarBrowse extends Component {
   constructor() {
@@ -10,10 +11,22 @@ class CarBrowse extends Component {
     };
   }
 
+  del(id) {
+    //  const elId = "5bfdb9a1b8daba077c5546c3";
+    axios.delete(`http://localhost:3001/api/cars/${id}`).then(() => {
+      console.log("Voy a hacer un fetch");
+      axios.get("http://localhost:3001/api/cars").then(res => {
+        console.log("Voy a setear el estado");
+        console.log(res.data);
+        this.setState({ data: res.data });
+      });
+    });
+  }
+
   componentDidMount() {
-    fetch("http://localhost:3001/api/cars")
-      .then(response => response.json())
-      .then(data => this.setState({ data }));
+    axios
+      .get("http://localhost:3001/api/cars")
+      .then(res => this.setState({ data: res.data }));
   }
 
   render() {
@@ -32,13 +45,17 @@ class CarBrowse extends Component {
           </tr>
         </thead>
 
-        {data.map(car => (
-          <BodyTable
+        {data.map((car, idx) => (
+          <TableRow
+            key={idx}
+            indice={idx}
             brand={car.brand}
             model={car.model}
             category={car.category}
             price={car.price}
             numDoors={car.numDoors}
+            id={car._id}
+            cb={id => this.del(id)}
           />
         ))}
       </Table>

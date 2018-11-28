@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Navbar, NavbarBrand, Button } from "reactstrap";
+import { Link } from "react-router-dom";
 import "./HeaderNav.css";
 
 class HeaderNav extends Component {
@@ -11,8 +12,12 @@ class HeaderNav extends Component {
             <img className="Brand-Logo" src="/logo.png" alt="Logo" /> &nbsp;
             CarApp
           </NavbarBrand>
-          <Button color="success">New Car</Button>
+
+          <Link to="/NewCar">
+            <Button color="success">New Car</Button>
+          </Link>
         </Navbar>
+        <div />
       </header>
     );
   }
