@@ -26,7 +26,14 @@ class BodyTable extends Component {
             <Button
               className="Delete-Button"
               color="danger"
-              onClick={() => this.props.cb(this.props.id)}
+              onClick={e => {
+                if (
+                  window.confirm(
+                    "¿Esta seguro que desea eliminar este Automovil?"
+                  )
+                )
+                  this.props.cb(this.props.id);
+              }}
             >
               Delete Car
             </Button>

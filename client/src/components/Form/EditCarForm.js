@@ -101,7 +101,10 @@ class EditCarFormR extends Component {
           <Button
             className="Edit-Button"
             color="info"
-            onClick={() => this.accept()}
+            onClick={e => {
+              if (window.confirm("¿Esta seguro que desea aplicar los cambios?"))
+                this.accept(e);
+            }}
           >
             Ok
           </Button>
