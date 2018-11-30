@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-export default function FilaCar({ car, onBorrar, onModificar }) {
+export default function FilaCar({ car, onBorrar }) {
   return (
     <tr>
       <th scope="row">{car.brand}</th>
@@ -11,13 +12,12 @@ export default function FilaCar({ car, onBorrar, onModificar }) {
       <td>$ {car.price}</td>
 
       <td className="Action-Buttons">
-        <Button
-          className="Edit-Button"
-          color="info"
-          onClick={() => onModificar(car)}
+        <Link
+          className="btn btn-info Edit-Button"
+          to={{ pathname: '/editarCar', state: { carEdit: car } }}
         >
           Edit Car
-        </Button>
+        </Link>
         <Button
           className="Delete-Button"
           color="danger"

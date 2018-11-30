@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import api from '../../api/api';
 import { Link } from 'react-router-dom';
 
-class EditarCar extends Component {
-  constructor() {
-    super();
+class AgregarCar extends Component {
+  constructor(props) {
+    super(props);
+
     this.state = {
       _id: null,
       brand: '',
@@ -100,7 +101,7 @@ class EditarCar extends Component {
                     Aceptar
                   </Link>
 
-                  <Link className="btn btn-danger" to={'/'}>
+                  <Link className="btn btn-danger" to={'/carBrowse'}>
                     Cancelar
                   </Link>
                 </div>
@@ -127,9 +128,9 @@ class EditarCar extends Component {
   onAceptarAgregar(car) {
     return api
       .addCar(car)
-      .then(() => {})
+      .then(() => this.props.history.push('/carBrowse'))
       .catch(err => console.log(err));
   }
 }
 
-export default EditarCar;
+export default AgregarCar;

@@ -41,7 +41,6 @@ carCtrl.editCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const car = await Car.findById(id);
-    console.log('id editando ' + id);
     if (car) {
       const { brand, model, category, price, numDoors } = req.body;
       await Car.update(
@@ -61,18 +60,20 @@ carCtrl.editCar = async (req, res, next) => {
       res.notFound();
     }
   } catch (exception) {
-    console.log(exception);
     res.internalServerError();
   }
 };
 
 carCtrl.deleteCar = async (req, res, next) => {
-  try {
-    await Car.findByIdAndRemove(req.params.id);
-    res.json('Eliminando Car');
-  } catch {
-    res.notFound();
-  }
+  await Car.findByIdAndRemove(req.params.id)
+    .then(item => {
+      if (item) {
+        res.noContent();
+      } else {
+        res.notFound();
+      }
+    })
+    .catch(err => res.internalServerError());
 };
 
 module.exports = carCtrl;
