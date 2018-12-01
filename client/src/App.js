@@ -10,10 +10,6 @@ import CarFormR from "./components/Form/CarFormR";
 import "./App.css";
 
 class App extends Component {
-  pindonga() {
-    alert("La Mansilla le metia los cuernos a pedro con el Leiva");
-  }
-
   render() {
     return (
       <Router>
