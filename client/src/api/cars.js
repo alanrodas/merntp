@@ -1,15 +1,6 @@
 import axios from 'axios';
 import sacarDataResponse from './sacarDataResponse';
 
-// const auto = auto.create({
-//   _id: '',
-//   brand: '',
-//   model: '',
-//   category: '',
-//   price: '',
-//   numDoors: ''
-// });
-
 const ax = axios.create({
   baseURL: 'http://localhost:3001'
 });
@@ -30,8 +21,8 @@ function deleteCar(id) {
   return ax.delete(`/api/cars/${id}`);
 }
 
-function modifyCar(id, car) {
-  return ax.put(`/api/cars/${id}`, car);
+function modifyCar(id, car, fn) {
+  return ax.put(`/api/cars/${id}`, car).then(() => fn());
 }
 
 export default {

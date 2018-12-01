@@ -97,7 +97,9 @@ class EditionCar extends Component {
   }
 
   onAceptar() {
-    api.addCar(this.state, () => this.props.history.push('/'));
+    api.modifyCar(this.state._id, this.state, () =>
+      this.props.history.push('/')
+    );
   }
 }
 
