@@ -1,30 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/api';
+import api from '../../api/cars';
+
 class EditionCar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: this.props._id,
-      brand: this.props.brand,
-      model: this.props.model,
-      category: this.props.category,
-      price: this.props.price,
-      numDoors: this.props.numDoors
+      _id: '',
+      brand: '',
+      model: '',
+      category: '',
+      price: '',
+      numDoors: ''
     };
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props !== prevProps) {
-      this.setState({
-        car: this.props.car
-      });
-    }
+
+  componentDidMount() {
+    api.getCar(this.props.match.params.id).then(res => {
+      this.setState(res.data);
+    });
   }
-  updateComponent() {
-    api
-      .getCar(this.props.match.params.id)
-      .then(car => this.setState({ id: this.props.match.params.id, car }));
-  }
+
   render() {
     return (
       <div>
@@ -101,20 +97,7 @@ class EditionCar extends Component {
   }
 
   onAceptar() {
-    const car = {
-      _id: this.state._id,
-      brand: this.state.brand,
-      model: this.state.model,
-      category: this.state.category,
-      price: this.state.price,
-      numDoors: this.state.numDoors
-    };
-    console.log(car);
-    if (this.props._id) {
-      this.props.onAceptarModificar(car);
-    } else {
-      this.props.onAceptarAgregar(car);
-    }
+    api.addCar(this.state, () => this.props.history.push('/'));
   }
 }
 

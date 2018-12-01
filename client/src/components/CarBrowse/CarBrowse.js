@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import './CarBrowse.css';
-import api from '../../api/api';
+import api from '../../api/cars';
 import FilaCar from './FilaCar';
 import EditionCar from './EditionCar';
 
@@ -17,7 +17,7 @@ class CarBrowse extends Component {
       price: 0,
       numDoors: 0,
       agregarCar: false,
-
+      modificarCar: null,
       borrarCar: null
     };
   }

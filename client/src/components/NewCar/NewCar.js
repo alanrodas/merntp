@@ -1,45 +1,96 @@
 import React, { Component } from 'react';
-import EditionCar from '../CarBrowse/EditionCar';
-import api from '../../api/api';
+import api from '../../api/cars';
+import { Link } from 'react-router-dom';
 
 class NewCar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: null,
       brand: '',
       model: '',
       category: '',
-      price: 0,
-      numDoors: 5
+      price: '',
+      numDoors: ''
     };
-    this.onAceptarAgregar = this.onAceptarAgregar.bind(this);
   }
+
   render() {
     return (
-      <div className="col-md-3">
-        <EditionCar
-          brand={this.state.brand}
-          model={this.state.model}
-          category={this.state.category}
-          price={this.state.price}
-          numDoors={this.state.numDoors}
-          onAceptarAgregar={car => this.onAceptarAgregar(car)}
-        />
+      <div>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Brand: </span>
+          </div>
+          <input
+            className="form-control"
+            type="string"
+            value={this.state.brand}
+            onChange={event => this.setState({ brand: event.target.value })}
+          />
+        </div>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Model: </span>
+          </div>
+          <input
+            className="form-control"
+            type="string"
+            value={this.state.model}
+            onChange={event => this.setState({ model: event.target.value })}
+          />
+        </div>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Category: </span>
+          </div>
+          <input
+            className="form-control"
+            type="string"
+            value={this.state.category}
+            onChange={event => this.setState({ category: event.target.value })}
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Cantidad puertas: </span>
+          </div>
+          <input
+            className="form-control"
+            type="number"
+            value={this.state.numDoors}
+            onChange={event =>
+              this.setState({ numDoors: parseInt(event.target.value, 10) })
+            }
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Price: </span>
+          </div>
+          <input
+            className="form-control"
+            type="number"
+            value={this.state.price}
+            onChange={event =>
+              this.setState({ price: parseInt(event.target.value, 10) })
+            }
+          />
+        </div>
+        <button className="btn btn-success" onClick={() => this.onAceptar()}>
+          Aceptar
+        </button>
+
+        <Link className="btn btn-danger" to="/">
+          Cancelar
+        </Link>
       </div>
     );
   }
 
-  onAceptarAgregar(car) {
-    let self = this;
-    api
-      .addCar(car)
-      .then(res => {
-        self.props.history.push('/');
-      })
-      .catch(err => this.alertarError(err));
-    this.setState({ agregarCar: null });
+  onAceptar() {
+    api.addCar(this.state, () => this.props.history.push('/'));
   }
 }
-
 export default NewCar;

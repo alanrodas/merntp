@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-function FilaCar({ car, onBorrar, onModificar }) {
+function FilaCar({ car, onBorrar }) {
   return (
     <tr>
       <td className="text-center" id="brand">
@@ -19,14 +20,11 @@ function FilaCar({ car, onBorrar, onModificar }) {
       <td className="text-center" id="puertas">
         {car.numDoors}
       </td>
+
       <td className="Action-Buttons">
-        <Button
-          className="Delete-Button"
-          color="info"
-          onClick={() => onModificar(car)}
-        >
-          Editar Car
-        </Button>
+        <Link className="btn btn-info" to={'/EditionCar/' + car._id}>
+          Editar
+        </Link>
 
         <Button
           className="Delete-Button"

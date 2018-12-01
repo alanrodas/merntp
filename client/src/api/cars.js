@@ -1,21 +1,29 @@
 import axios from 'axios';
 import sacarDataResponse from './sacarDataResponse';
 
+// const auto = auto.create({
+//   _id: '',
+//   brand: '',
+//   model: '',
+//   category: '',
+//   price: '',
+//   numDoors: ''
+// });
+
 const ax = axios.create({
-  baseURL: 'http://localhost:3001',
-  timeout: 1000
+  baseURL: 'http://localhost:3001'
 });
 
 function getCars() {
   return sacarDataResponse(ax.get('/api/cars'));
 }
 
-function addCar(dataCar) {
-  return ax.post('/api/cars', dataCar);
+function addCar(dataCar, fn) {
+  return ax.post('/api/cars', dataCar).then(() => fn());
 }
 
 function getCar(id) {
-  return sacarDataResponse(ax.get(`/api/cars/${id}`));
+  return ax.get(`/api/cars/${id}`);
 }
 
 function deleteCar(id) {
