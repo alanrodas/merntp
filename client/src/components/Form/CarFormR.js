@@ -2,6 +2,7 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import "./Form.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/apiRar";
 
 class CarFormR extends Component {
   constructor(props) {
@@ -17,11 +18,7 @@ class CarFormR extends Component {
   }
 
   accept() {
-    const axios = require("axios");
-
-    axios
-      .post("http://localhost:3001/api/cars", this.state)
-      .then(() => this.props.history.push("/"));
+    api.createCar(this.state, () => this.props.history.push("/"));
   }
 
   render() {
@@ -58,6 +55,10 @@ class CarFormR extends Component {
                   this.setState({ category: event.target.value })
                 }
               />
+
+              <div style={{ fontSize: 20, color: "red" }}>
+                {this.state.categoryError}
+              </div>
             </div>
             <div>
               <InputGroupAddon>Price</InputGroupAddon>

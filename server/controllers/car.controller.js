@@ -35,11 +35,8 @@ carCtrl.getCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const car = await Car.findById(id);
-    if (car) {
-      res.ok(car);
-    } else {
-      res.notFound();
-    }
+
+    res.ok(car);
   } catch (exception) {
     res.internalServerError();
   }

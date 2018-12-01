@@ -2,6 +2,9 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import "./Form.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
+import api from "../api/apiRar";
+
 const axios = require("axios");
 
 class EditCarFormR extends Component {
@@ -18,24 +21,15 @@ class EditCarFormR extends Component {
   }
 
   accept() {
-    axios
-      .put(
-        "http://localhost:3001/api/cars/" + this.props.match.params.id,
-        this.state
-      )
-      .then(() => this.props.history.push("/"));
+    api.modCar(this.props.match.params.id, this.state, () =>
+      this.props.history.push("/")
+    );
   }
 
   componentDidMount() {
-    axios
-      .get("http://localhost:3001/api/cars/" + this.props.match.params.id)
-      .then(res => {
-        this.setState({ brand: res.data.brand });
-        this.setState({ model: res.data.model });
-        this.setState({ category: res.data.category });
-        this.setState({ price: res.data.price });
-        this.setState({ numDoors: res.data.numDoors });
-      });
+    api.getCar(this.props.match.params.id).then(res => {
+      this.setState(res.data);
+    });
   }
 
   render() {
@@ -101,9 +95,8 @@ class EditCarFormR extends Component {
           <Button
             className="Edit-Button"
             color="info"
-            onClick={e => {
-              if (window.confirm("¿Esta seguro que desea aplicar los cambios?"))
-                this.accept(e);
+            onClick={() => {
+              this.accept();
             }}
           >
             Ok
