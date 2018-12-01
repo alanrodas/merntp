@@ -2,10 +2,7 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import "./Form.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
 import api from "../api/apiRar";
-
-const axios = require("axios");
 
 class EditCarFormR extends Component {
   constructor(props) {

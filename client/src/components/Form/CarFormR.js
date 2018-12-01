@@ -27,9 +27,8 @@ class CarFormR extends Component {
         <div className="w-25 p-3">
           <InputGroup>
             <div>
-              <InputGroupAddon className="pepe">Brand</InputGroupAddon>
+              <InputGroupAddon>Brand</InputGroupAddon>
               <Input
-                placeholder=""
                 type="string"
                 value={this.state.brand}
                 onChange={event => this.setState({ brand: event.target.value })}
@@ -40,7 +39,6 @@ class CarFormR extends Component {
               <InputGroupAddon>Model</InputGroupAddon>
               <Input
                 type="string"
-                placeholder=""
                 value={this.state.model}
                 onChange={event => this.setState({ model: event.target.value })}
               />
@@ -48,7 +46,6 @@ class CarFormR extends Component {
             <div>
               <InputGroupAddon>Category</InputGroupAddon>
               <Input
-                placeholder=""
                 type="string"
                 value={this.state.category}
                 onChange={event =>
@@ -63,7 +60,6 @@ class CarFormR extends Component {
             <div>
               <InputGroupAddon>Price</InputGroupAddon>
               <Input
-                placeholder=""
                 type="number"
                 value={this.state.price}
                 onChange={event =>
@@ -75,7 +71,6 @@ class CarFormR extends Component {
             <div>
               <InputGroupAddon>NumDoors</InputGroupAddon>
               <Input
-                placeholder=""
                 type="number"
                 value={this.state.numDoors}
                 onChange={event =>

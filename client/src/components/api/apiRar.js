@@ -13,4 +13,11 @@ function createCar(car, cb) {
   axios.post("http://localhost:3001/api/cars", car).then(() => cb());
 }
 
-export default { getCar, modCar, createCar };
+function deleteCar(id, fn) {
+  axios.delete("http://localhost:3001/api/cars/" + id).then(() => fn());
+}
+
+function getCars() {
+  return axios.get("http://localhost:3001/api/cars");
+}
+export default { getCar, modCar, createCar, getCars, deleteCar };
